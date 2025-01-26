@@ -1,7 +1,6 @@
 #![deny(warnings)]
 use flutter_rust_bridge::frb;
 
-
 #[derive(Debug, Clone)]
 #[frb]
 pub struct FSRS(fsrs::FSRS);
@@ -66,7 +65,7 @@ pub struct MemoryState(fsrs::MemoryState);
 
 impl MemoryState {
     #[frb(sync)]
-    
+
     pub fn new(stability: f32, difficulty: f32) -> Self {
         Self(fsrs::MemoryState {
             stability,
@@ -149,7 +148,7 @@ pub struct FSRSReview(fsrs::FSRSReview);
 
 impl FSRSReview {
     #[frb(sync)]
-    
+
     pub fn new(rating: u32, delta_t: u32) -> Self {
         Self(fsrs::FSRSReview { rating, delta_t })
     }
