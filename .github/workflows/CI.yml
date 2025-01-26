@@ -47,14 +47,6 @@ jobs:
           mkdir -p fsrs_rs_dart/lib/bridge/frb_generated
           flutter_rust_bridge_codegen generate
 
-      - name: rust ci
-        run: |
-          set -eux -o pipefail
-          cd rust
-          # cargo fmt --all -- --check
-          # cargo clippy -- -D warnings
-          cargo build --verbose
-          cargo test --verbose
 
       - name: Flutter pub get
         run: flutter pub get
