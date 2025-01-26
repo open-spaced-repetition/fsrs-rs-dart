@@ -31,24 +31,26 @@ jobs:
         with:
           flutter-version: ${{ env.FLUTTER_VERSION }}
           channel: 'stable'
+      - name: Install cargo-binstall
+        uses: cargo-bins/cargo-binstall@v1.10.22
 
       - name: Install flutter_rust_bridge_codegen
-        run: cargo install flutter_rust_bridge_codegen --version "^2.0.0"
+        run: |
+          cargo binstall --no-confirm --no-symlinks cargo-expand
+          cargo binstall --no-confirm --no-symlinks flutter_rust_bridge_codegen --version "^2.0.0"
 
       - name: Generate bridge code
-        run: flutter_rust_bridge_codegen generate --rust-input src/lib.rs
+        run: |
+          mkdir -p fsrs_rs_dart/lib/bridge/frb_generated
+          flutter_rust_bridge_codegen generate
 
-      - name: Check formatting
-        run: cargo fmt --all -- --check
-
-      - name: Clippy
-        run: cargo clippy -- -D warnings
-
-      - name: Build
-        run: cargo build --verbose
-
-      - name: Run tests
-        run: cargo test --verbose
+      - name: rust ci
+        run: |
+          cd rust
+          cargo fmt --all -- --check
+          cargo clippy -- -D warnings
+          cargo build --verbose
+          cargo test --verbose
 
       - name: Flutter pub get
         run: flutter pub get

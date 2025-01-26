@@ -6,3 +6,6 @@ edition = "2021"
 [dependencies]
 flutter_rust_bridge = "2.7.0"
 fsrs = "2.0.2"
+
+[lib]
+crate-type = ["cdylib"]
