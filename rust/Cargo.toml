@@ -1,5 +1,5 @@
 [package]
-name = "rust"
+name = "fsrs_rs_dart"
 version = "0.1.0"
 edition = "2021"
 
@@ -8,4 +8,4 @@ flutter_rust_bridge = "2.7.0"
 fsrs = "2.0.2"
 
 [lib]
-crate-type = ["cdylib"]
+crate-type = ["staticlib", "cdylib"]

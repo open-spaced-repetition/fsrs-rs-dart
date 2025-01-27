@@ -1098,6 +1098,14 @@ dependencies = [
 ]
 
 [[package]]
+name = "fsrs_rs_dart"
+version = "0.1.0"
+dependencies = [
+ "flutter_rust_bridge",
+ "fsrs",
+]
+
+[[package]]
 name = "futures"
 version = "0.3.31"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2571,14 +2579,6 @@ dependencies = [
  "hashlink",
  "libsqlite3-sys",
  "smallvec",
-]
-
-[[package]]
-name = "rust"
-version = "0.1.0"
-dependencies = [
- "flutter_rust_bridge",
- "fsrs",
 ]
 
 [[package]]
