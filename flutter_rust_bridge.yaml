@@ -1,4 +1,4 @@
-rust_root: 'rust'
-rust_input: 'crate::api'
-dart_output: 'fsrs_rs_dart/lib/bridge/frb_generated'
-stop_on_error: true
+rust_input: crate::api
+rust_root: rust/
+dart_output: lib/src/rust
+local: true

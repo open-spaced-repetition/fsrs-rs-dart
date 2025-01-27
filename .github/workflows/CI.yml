@@ -44,7 +44,7 @@ jobs:
       - name: Generate bridge code
         run: |
           set -eux -o pipefail
-          mkdir -p fsrs_rs_dart/lib/bridge/frb_generated
+          mkdir -p lib/src/rust
           flutter_rust_bridge_codegen generate
 
 
