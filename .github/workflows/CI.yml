@@ -7,7 +7,7 @@ on:
 
 env:
   CARGO_TERM_COLOR: always
-  FLUTTER_VERSION: "3.19.0"
+  FLUTTER_VERSION: "3.27.3"
 
 jobs:
   build:
@@ -30,7 +30,7 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           flutter-version: ${{ env.FLUTTER_VERSION }}
-          channel: 'beta'
+          channel: 'stable'
       - name: Install cargo-binstall
         uses: cargo-bins/cargo-binstall@v1.10.22
 
