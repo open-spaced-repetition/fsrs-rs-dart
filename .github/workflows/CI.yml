@@ -30,7 +30,7 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           flutter-version: ${{ env.FLUTTER_VERSION }}
-          channel: 'stable'
+          channel: 'beta'
       - name: Install cargo-binstall
         uses: cargo-bins/cargo-binstall@v1.10.22
 
