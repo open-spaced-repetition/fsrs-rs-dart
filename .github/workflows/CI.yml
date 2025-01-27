@@ -38,8 +38,8 @@ jobs:
         run: |
           set -eux -o pipefail
           curl -fsSL https://fvm.app/install.sh | bash
-          cargo binstall --no-confirm --no-symlinks cargo-expand
-          cargo binstall --no-confirm --no-symlinks flutter_rust_bridge_codegen --version "^2.0.0"
+          cargo binstall --no-confirm --no-symlinks --force cargo-expand
+          cargo binstall --no-confirm --no-symlinks --force flutter_rust_bridge_codegen --version "^2.0.0"
 
       - name: Generate bridge code
         run: |
