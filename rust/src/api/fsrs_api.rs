@@ -9,9 +9,11 @@ pub fn init_app() {
 #[frb(opaque)]
 pub struct FSRS(fsrs::FSRS);
 impl FSRS {
+    #[frb(sync)]
     pub fn new(parameters: Vec<f32>) -> Self {
         Self(fsrs::FSRS::new(Some(&parameters)).unwrap())
     }
+    #[frb(sync)]
     pub fn next_states(
         &self,
         current_memory_state: Option<MemoryState>,
@@ -74,15 +76,19 @@ impl MemoryState {
 #[frb(opaque)]
 pub struct NextStates(fsrs::NextStates);
 impl NextStates {
+    #[frb(sync, getter)]
     pub fn hard(&self) -> ItemState {
         ItemState(self.0.hard.clone())
     }
+    #[frb(sync, getter)]
     pub fn good(&self) -> ItemState {
         ItemState(self.0.good.clone())
     }
+    #[frb(sync, getter)]
     pub fn easy(&self) -> ItemState {
         ItemState(self.0.easy.clone())
     }
+    #[frb(sync, getter)]
     pub fn again(&self) -> ItemState {
         ItemState(self.0.again.clone())
     }
@@ -93,9 +99,11 @@ impl NextStates {
 pub struct ItemState(fsrs::ItemState);
 
 impl ItemState {
+    #[frb(sync, getter)]
     pub fn memory(&self) -> MemoryState {
         MemoryState(self.0.memory.clone())
     }
+    #[frb(sync, getter)]
     pub fn interval(&self) -> f32 {
         self.0.interval
     }
@@ -109,6 +117,7 @@ impl ItemState {
 pub struct FSRSItem(fsrs::FSRSItem);
 
 impl FSRSItem {
+    #[frb(sync)]
     pub fn new(reviews: Vec<FSRSReview>) -> Self {
         Self(fsrs::FSRSItem {
             reviews: reviews.iter().map(|x| x.0).collect(),
@@ -142,6 +151,7 @@ impl FSRSItem {
 pub struct FSRSReview(fsrs::FSRSReview);
 
 impl FSRSReview {
+    #[frb(sync)]
     pub fn new(rating: u32, delta_t: u32) -> Self {
         Self(fsrs::FSRSReview { rating, delta_t })
     }
