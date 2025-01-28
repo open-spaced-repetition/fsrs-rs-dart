@@ -6,6 +6,7 @@ pub fn init_app() {
 }
 
 #[derive(Debug, Clone)]
+#[frb(opaque)]
 pub struct FSRS(fsrs::FSRS);
 impl FSRS {
     pub fn new(parameters: Vec<f32>) -> Self {
@@ -57,6 +58,7 @@ impl FSRS {
     }
 }
 #[derive(Debug, Clone)]
+#[frb(opaque)]
 pub struct MemoryState(fsrs::MemoryState);
 
 impl MemoryState {
@@ -69,6 +71,7 @@ impl MemoryState {
 }
 
 #[derive(Debug, Clone)]
+#[frb(opaque)]
 pub struct NextStates(fsrs::NextStates);
 impl NextStates {
     pub fn hard(&self) -> ItemState {
@@ -86,6 +89,7 @@ impl NextStates {
 }
 
 #[derive(Debug, Clone)]
+#[frb(opaque)]
 pub struct ItemState(fsrs::ItemState);
 
 impl ItemState {
@@ -101,6 +105,7 @@ impl ItemState {
 }
 
 #[derive(Debug, Clone)]
+#[frb(opaque)]
 pub struct FSRSItem(fsrs::FSRSItem);
 
 impl FSRSItem {
@@ -133,6 +138,7 @@ impl FSRSItem {
 }
 
 #[derive(Debug, Clone)]
+#[frb(opaque)]
 pub struct FSRSReview(fsrs::FSRSReview);
 
 impl FSRSReview {
