@@ -51,5 +51,5 @@ jobs:
       - name: Flutter pub get
         run: flutter pub get
 
-      # - name: Flutter analyze
-      #   run: flutter analyze
+      - name: Flutter analyze
+        run: flutter analyze
