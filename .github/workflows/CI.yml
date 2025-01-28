@@ -50,6 +50,9 @@ jobs:
 
       - name: Flutter pub get
         run: flutter pub get
+    
+      - name: Debugging with tmate
+        uses: mxschmitt/action-tmate@v3.19
 
       - name: Flutter analyze
         run: flutter analyze
