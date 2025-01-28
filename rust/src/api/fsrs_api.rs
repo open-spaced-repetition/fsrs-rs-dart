@@ -9,7 +9,6 @@ pub fn init_app() {
 #[frb(opaque)]
 pub struct FSRS(fsrs::FSRS);
 impl FSRS {
-    #[frb(sync)]
     pub fn new(parameters: Vec<f32>) -> Self {
         Self(fsrs::FSRS::new(Some(&parameters)).unwrap())
     }

@@ -15,7 +15,7 @@ Future<void> example() async {
 
   // Example: Calculate next states for a new item
   // Initial review with no prior memory state
-  final nextStates = await fsrs.nextStates(
+  final nextStates = fsrs.nextStates(
     currentMemoryState: null, // No prior state for new items
     desiredRetention: 0.9, // 90% retention target
     daysElapsed: 0, // First review
@@ -23,8 +23,8 @@ Future<void> example() async {
 
   // Print the results
   print('Next states calculated:');
-  print('Again state: ${await (await nextStates.again()).interval()} days');
-  print('Hard  state: ${await (await nextStates.hard()).interval()} days');
-  print('Good  state: ${await (await nextStates.good()).interval()} days');
-  print('Easy  state: ${await (await nextStates.easy()).interval()} days');
+  print('Again state: ${(nextStates.again).interval} days');
+  print('Hard  state: ${(nextStates.hard).interval} days');
+  print('Good  state: ${(nextStates.good).interval} days');
+  print('Easy  state: ${(nextStates.easy).interval} days');
 }
