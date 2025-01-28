@@ -23,8 +23,8 @@ Future<void> example() async {
 
   // Print the results
   print('Next states calculated:');
-  print('Again state: ${nextStates.again.interval} days');
-  print('Hard state: ${nextStates.hard.interval} days');
-  print('Good state: ${nextStates.good.interval} days');
-  print('Easy state: ${nextStates.easy.interval} days');
+  print('Again state: ${await (await nextStates.again()).interval()} days');
+  print('Hard  state: ${await (await nextStates.hard()).interval()} days');
+  print('Good  state: ${await (await nextStates.good()).interval()} days');
+  print('Easy  state: ${await (await nextStates.easy()).interval()} days');
 }
