@@ -1,6 +1,10 @@
-# FSRS Rust Dart binding(WIP)
+# FSRS Rust Dart binding
 
 A Rust implementation of the Free Spaced Repetition Scheduler (FSRS) algorithm with Flutter/Dart bindings using flutter_rust_bridge.
+
+## Examples
+
+see [example](./lib/example.dart)
 
 ## Features
 
@@ -14,17 +18,16 @@ A Rust implementation of the Free Spaced Repetition Scheduler (FSRS) algorithm w
 
 - Rust (stable channel)
 - Flutter SDK (v3.27.3 or later)
-- flutter_rust_bridge_codegen (`cargo install flutter_rust_bridge_codegen`)
+- flutter\_rust\_bridge\_codegen (`cargo install flutter_rust_bridge_codegen`)
 
 ## Setup
 
-1. Clone the repository:
 ```bash
 git clone <repository-url>
 cd fsrs-rs-dart
-cargo build
-flutter pub get
 flutter_rust_bridge_codegen generate
+flutter pub get
+flutter analyze
 ```
 
 ## License
