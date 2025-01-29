@@ -8,6 +8,7 @@ dependencies:
   lints: ^2.0.1
   flutter_rust_bridge: ^2.7.0
   freezed_annotation: ^2.2.0
+  collection: ^1.18.0
 dev_dependencies:
   test: ^1.21.4
   freezed: ^2.1.0+1

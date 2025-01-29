@@ -9,6 +9,7 @@ pub fn init_app() {
 #[frb(opaque)]
 pub struct FSRS(fsrs::FSRS);
 impl FSRS {
+    #[frb(sync)]
     pub fn new(parameters: Vec<f32>) -> Self {
         Self(fsrs::FSRS::new(Some(&parameters)).unwrap())
     }
@@ -106,9 +107,6 @@ impl ItemState {
     pub fn interval(&self) -> f32 {
         self.0.interval
     }
-    pub fn __repr__(&self) -> String {
-        format!("{:?}", self.0)
-    }
 }
 
 #[derive(Debug, Clone)]
@@ -140,9 +138,6 @@ impl FSRSItem {
             .filter(|review| review.delta_t > 0)
             .count()
     }
-    pub fn __repr__(&self) -> String {
-        return format!("{:?}", self.0);
-    }
 }
 
 #[derive(Debug, Clone)]
@@ -158,7 +153,7 @@ impl FSRSReview {
         return format!("{:?}", self.0);
     }
 }
-
+#[frb(sync)]
 pub const fn DEFAULT_PARAMETERS() -> [f32; 19] {
     [
         0.40255, 1.18385, 3.173, 15.69105, 7.1949, 0.5345, 1.4604, 0.0046, 1.54575, 0.1192,
