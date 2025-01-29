@@ -10,14 +10,12 @@ Future<void> main() async {
   final reviewHistoriesOfCards = createReviewHistoriesForCards();
 
   // Convert review histories to FSRSItems
-  final fsrsItems = await Future.wait(
-    reviewHistoriesOfCards.expand((history) => convertToFsrsItem(history)).toList(),
-  );
+  final fsrsItems = reviewHistoriesOfCards.expand((history) => convertToFsrsItem(history)).toList();
   print('Number of FSRS items: ${fsrsItems.length}');
 
   // Create FSRS instance with default parameters
-  final fsrs = await Fsrs.newInstance(parameters: DEFAULT_PARAMETERS);
-  print('Default parameters: ${DEFAULT_PARAMETERS}');
+  final fsrs = new Fsrs(parameters: defaultParameters());
+  print('Default parameters: ${defaultParameters()}');
 
   // Optimize parameters
   final optimizedParameters = fsrs.computeParameters(fsrsItems);

@@ -51,8 +51,16 @@ jobs:
       - name: Flutter pub get
         run: flutter pub get
 
-      - name: Debugging with tmate
-        uses: mxschmitt/action-tmate@v3.19
+      # - name: build lib
+      #   run: cd rust && cargo build --release
+      # - name: test
+      #   run: |
+      #     dart run lib/example.dart
+      #     dart run lib/migrate.dart
+      #     dart run lib/optimize.dart
+
+      # - name: Debugging with tmate
+      #   uses: mxschmitt/action-tmate@v3.19
 
       # - name: Flutter analyze
       #   run: flutter analyze

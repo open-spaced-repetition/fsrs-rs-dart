@@ -30,15 +30,18 @@ impl FSRS {
                 .unwrap(),
         )
     }
+    #[frb(sync)]
     pub fn compute_parameters(&self, train_set: Vec<FSRSItem>) -> Vec<f32> {
         self.0
             .compute_parameters(train_set.iter().map(|x| x.0.clone()).collect(), None, true)
             .unwrap_or_default()
     }
+    #[frb(sync)]
     pub fn benchmark(&self, train_set: Vec<FSRSItem>) -> Vec<f32> {
         self.0
             .benchmark(train_set.iter().map(|x| x.0.clone()).collect(), true)
     }
+    #[frb(sync)]
     pub fn memory_state_from_sm2(
         &self,
         ease_factor: f32,
@@ -51,6 +54,7 @@ impl FSRS {
                 .unwrap(),
         )
     }
+    #[frb(sync)]
     pub fn memory_state(&self, item: FSRSItem, starting_state: Option<MemoryState>) -> MemoryState {
         MemoryState(
             self.0
@@ -64,6 +68,7 @@ impl FSRS {
 pub struct MemoryState(fsrs::MemoryState);
 
 impl MemoryState {
+    #[frb(sync)]
     pub fn new(stability: f32, difficulty: f32) -> Self {
         Self(fsrs::MemoryState {
             stability,
@@ -120,6 +125,7 @@ impl FSRSItem {
             reviews: reviews.iter().map(|x| x.0).collect(),
         })
     }
+    #[frb(sync)]
     pub fn get_reviews(&self) -> Vec<FSRSReview> {
         self.0
             .reviews
@@ -127,10 +133,11 @@ impl FSRSItem {
             .map(|x| FSRSReview(x.clone()))
             .collect()
     }
+    #[frb(sync)]
     pub fn set_reviews(&mut self, other: Vec<FSRSReview>) {
         self.0.reviews = other.iter().map(|x| x.0).collect()
     }
-
+    #[frb(sync)]
     pub fn long_term_review_cnt(&self) -> usize {
         self.0
             .reviews
@@ -148,9 +155,6 @@ impl FSRSReview {
     #[frb(sync)]
     pub fn new(rating: u32, delta_t: u32) -> Self {
         Self(fsrs::FSRSReview { rating, delta_t })
-    }
-    pub fn __repr__(&self) -> String {
-        return format!("{:?}", self.0);
     }
 }
 #[frb(sync)]

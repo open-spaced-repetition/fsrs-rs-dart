@@ -3,7 +3,7 @@ import 'src/rust/api/fsrs_api.dart';
 
 void migrateWithFullHistory() {
   // Create a new FSRS instance with default parameters
-  final fsrs = new Fsrs(parameters: DEFAULT_PARAMETERS);
+  final fsrs = new Fsrs(parameters: defaultParameters());
 
   // Simulate a full review history for a card
   final reviews = [
@@ -20,7 +20,7 @@ void migrateWithFullHistory() {
 }
 
 void migrateWithPartialHistory() {
-  final fsrs = new Fsrs(parameters: DEFAULT_PARAMETERS);
+  final fsrs = new Fsrs(parameters: defaultParameters());
 
   // Set the true retention of the original algorithm
   const sm2Retention = 0.9;
@@ -48,7 +48,7 @@ void migrateWithPartialHistory() {
 }
 
 void migrateWithLatestState() {
-  final fsrs = new Fsrs(parameters: DEFAULT_PARAMETERS);
+  final fsrs = new Fsrs(parameters: defaultParameters());
 
   // Set the true retention of the original algorithm
   const sm2Retention = 0.9;

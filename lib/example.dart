@@ -1,7 +1,7 @@
 import 'src/rust/frb_generated.dart';
 import 'src/rust/api/fsrs_api.dart';
 
-Future<void> example() async {
+Future<void> main() async {
   // Initialize the Rust bridge
   await RustLib.init();
   
