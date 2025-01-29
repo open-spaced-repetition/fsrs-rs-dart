@@ -51,8 +51,8 @@ jobs:
       - name: Flutter pub get
         run: flutter pub get
 
-      # - name: build lib
-      #   run: cd rust && cargo build --release
+      - name: build lib
+        run: cd rust && cargo build --release
       # - name: test
       #   run: |
       #     dart run lib/example.dart
