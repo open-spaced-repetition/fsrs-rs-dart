@@ -11,9 +11,11 @@ pub fn init_app() {
 #[frb(opaque)]
 pub struct FSRS(Mutex<fsrs::FSRS>);
 impl FSRS {
+    #[frb(sync)]
     pub fn new(parameters: Vec<f32>) -> Self {
         Self(fsrs::FSRS::new(Some(&parameters)).unwrap().into())
     }
+    #[frb(sync)]
     pub fn next_states(
         &self,
         current_memory_state: Option<MemoryState>,
@@ -33,6 +35,7 @@ impl FSRS {
                 .into(),
         )
     }
+    #[frb(sync)]
     pub fn compute_parameters(&self, train_set: Vec<FSRSItem>) -> Vec<f32> {
         self.0
             .lock()
@@ -40,12 +43,14 @@ impl FSRS {
             .compute_parameters(train_set.iter().map(|x| x.0.clone()).collect(), None, true)
             .unwrap_or_default()
     }
+    #[frb(sync)]
     pub fn benchmark(&self, train_set: Vec<FSRSItem>) -> Vec<f32> {
         self.0
             .lock()
             .unwrap()
             .benchmark(train_set.iter().map(|x| x.0.clone()).collect(), true)
     }
+    #[frb(sync)]
     pub fn memory_state_from_sm2(
         &self,
         ease_factor: f32,
@@ -61,6 +66,7 @@ impl FSRS {
                 .into(),
         )
     }
+    #[frb(sync)]
     pub fn memory_state(&self, item: FSRSItem, starting_state: Option<MemoryState>) -> MemoryState {
         MemoryState(
             self.0
@@ -77,6 +83,7 @@ impl FSRS {
 pub struct MemoryState(fsrs::MemoryState);
 
 impl MemoryState {
+    #[frb(sync)]
     pub fn new(stability: f32, difficulty: f32) -> Self {
         Self(fsrs::MemoryState {
             stability,
@@ -89,15 +96,19 @@ impl MemoryState {
 #[frb(opaque)]
 pub struct NextStates(fsrs::NextStates);
 impl NextStates {
+    #[frb(sync, getter)]
     pub fn hard(&self) -> ItemState {
         ItemState(self.0.hard.clone())
     }
+    #[frb(sync, getter)]
     pub fn good(&self) -> ItemState {
         ItemState(self.0.good.clone())
     }
+    #[frb(sync, getter)]
     pub fn easy(&self) -> ItemState {
         ItemState(self.0.easy.clone())
     }
+    #[frb(sync, getter)]
     pub fn again(&self) -> ItemState {
         ItemState(self.0.again.clone())
     }
@@ -108,9 +119,11 @@ impl NextStates {
 pub struct ItemState(fsrs::ItemState);
 
 impl ItemState {
+    #[frb(sync, getter)]
     pub fn memory(&self) -> MemoryState {
         MemoryState(self.0.memory.clone().into())
     }
+    #[frb(sync, getter)]
     pub fn interval(&self) -> f32 {
         self.0.interval
     }
@@ -121,11 +134,13 @@ impl ItemState {
 pub struct FSRSItem(fsrs::FSRSItem);
 
 impl FSRSItem {
+    #[frb(sync)]
     pub fn new(reviews: Vec<FSRSReview>) -> Self {
         Self(fsrs::FSRSItem {
             reviews: reviews.iter().map(|x| x.0).collect(),
         })
     }
+    #[frb(sync, getter)]
     pub fn get_reviews(&self) -> Vec<FSRSReview> {
         self.0
             .reviews
@@ -133,9 +148,11 @@ impl FSRSItem {
             .map(|x| FSRSReview(x.clone()))
             .collect()
     }
+    #[frb(sync)]
     pub fn set_reviews(&mut self, other: Vec<FSRSReview>) {
         self.0.reviews = other.iter().map(|x| x.0).collect()
     }
+    #[frb(sync, getter)]
     pub fn long_term_review_cnt(&self) -> usize {
         self.0
             .reviews
@@ -150,10 +167,12 @@ impl FSRSItem {
 pub struct FSRSReview(fsrs::FSRSReview);
 
 impl FSRSReview {
+    #[frb(sync)]
     pub fn new(rating: u32, delta_t: u32) -> Self {
         Self(fsrs::FSRSReview { rating, delta_t })
     }
 }
+#[frb(sync)]
 pub const fn DEFAULT_PARAMETERS() -> [f32; 19] {
     [
         0.40255, 1.18385, 3.173, 15.69105, 7.1949, 0.5345, 1.4604, 0.0046, 1.54575, 0.1192,
