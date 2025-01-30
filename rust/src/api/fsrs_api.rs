@@ -172,7 +172,9 @@ impl FSRSReview {
         Self(fsrs::FSRSReview { rating, delta_t })
     }
 }
+
 #[frb(sync)]
+#[allow(non_snake_case)]
 pub const fn DEFAULT_PARAMETERS() -> [f32; 19] {
     [
         0.40255, 1.18385, 3.173, 15.69105, 7.1949, 0.5345, 1.4604, 0.0046, 1.54575, 0.1192,

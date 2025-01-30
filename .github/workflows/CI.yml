@@ -41,6 +41,13 @@ jobs:
           cargo binstall --no-confirm --no-symlinks --force cargo-expand
           cargo binstall --no-confirm --no-symlinks --force flutter_rust_bridge_codegen --version "2.7.1"
 
+      - name: lint lib before codegen
+        run: |
+          set -eux -o pipefail
+          pushd rust
+          cargo clippy -- -D warnings
+          cargo fmt -- --check
+
       - name: Generate bridge code
         run: |
           set -eux -o pipefail
@@ -53,12 +60,18 @@ jobs:
         run: flutter pub get
 
       - name: build lib
-        run: cd rust && cargo build --release
+        run: |
+          set -eux -o pipefail
+          pushd rust
+          cargo build --release
+
 
       - name: test
         run: |
           dart run lib/example.dart
           dart run lib/migrate.dart
+          dart run lib/schedule.dart
+
          # dart run lib/optimize.dart
 
       # - name: Debugging with tmate
