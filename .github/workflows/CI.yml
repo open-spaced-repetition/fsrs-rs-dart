@@ -39,27 +39,27 @@ jobs:
           set -eux -o pipefail
           curl -fsSL https://fvm.app/install.sh | bash
           cargo binstall --no-confirm --no-symlinks --force cargo-expand
-          cargo binstall --no-confirm --no-symlinks --force flutter_rust_bridge_codegen --version "2.7.1"
+          cargo binstall --no-confirm --no-symlinks --force flutter_rust_bridge_codegen --version "2.7.0"
 
       - name: Generate bridge code
         run: |
           set -eux -o pipefail
           mkdir -p lib/src/rust
           flutter_rust_bridge_codegen generate
-
+          # just ensure the version
+          sed -i "s/2.7.1/2.7.0/g" rust/src/frb_generated.rs
 
       - name: Flutter pub get
         run: flutter pub get
 
       - name: build lib
         run: cd rust && cargo build --release
-      - name: Debugging with tmate
-        uses: mxschmitt/action-tmate@v3.19
-      # - name: test
-      #   run: |
-      #     dart run lib/example.dart
-      #     dart run lib/migrate.dart
-      #     dart run lib/optimize.dart
+
+      - name: test
+        run: |
+          dart run lib/example.dart
+          dart run lib/migrate.dart
+         # dart run lib/optimize.dart
 
       # - name: Debugging with tmate
       #   uses: mxschmitt/action-tmate@v3.19
