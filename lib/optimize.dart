@@ -18,7 +18,7 @@ Future<void> main() async {
   print('Default parameters: ${defaultParameters()}');
 
   // Optimize parameters
-  final optimizedParameters = fsrs.computeParameters(fsrsItems);
+  final optimizedParameters = fsrs.computeParameters(trainSet: fsrsItems);
   print('Optimized parameters: $optimizedParameters');
 }
 
@@ -48,7 +48,7 @@ List<List<(DateTime, int)>> createReviewHistoriesForCards() {
   return List.generate(100, (i) => baseHistories[i % baseHistories.length]);
 }
 
-Future<List<FsrsItem>> convertToFsrsItem(List<(DateTime, int)> history) async {
+List<FsrsItem> convertToFsrsItem(List<(DateTime, int)> history) {
   final reviews = <FsrsReview>[];
   var lastDate = history[0].$1;
   final items = <FsrsItem>[];
@@ -65,5 +65,5 @@ Future<List<FsrsItem>> convertToFsrsItem(List<(DateTime, int)> history) async {
     lastDate = date;
   }
 
-  return items.where((item) => item.longTermReviewCnt > 0).toList();
+  return items.where((item) => item.longTermReviewCnt > BigInt.zero).toList();
 }

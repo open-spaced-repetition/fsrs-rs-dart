@@ -36,7 +36,7 @@ impl FSRS {
         )
     }
     #[frb(sync)]
-    pub fn compute_parameters(&self, train_set: Vec<FSRSItem>) -> Vec<f32> {
+    pub fn compute_parameters(&self, train_set: &[FSRSItem]) -> Vec<f32> {
         self.0
             .lock()
             .unwrap()
@@ -44,7 +44,7 @@ impl FSRS {
             .unwrap_or_default()
     }
     #[frb(sync)]
-    pub fn benchmark(&self, train_set: Vec<FSRSItem>) -> Vec<f32> {
+    pub fn benchmark(&self, train_set: &[FSRSItem]) -> Vec<f32> {
         self.0
             .lock()
             .unwrap()
@@ -135,7 +135,7 @@ pub struct FSRSItem(fsrs::FSRSItem);
 
 impl FSRSItem {
     #[frb(sync)]
-    pub fn new(reviews: Vec<FSRSReview>) -> Self {
+    pub fn new(reviews: &[FSRSReview]) -> Self {
         Self(fsrs::FSRSItem {
             reviews: reviews.iter().map(|x| x.0).collect(),
         })
@@ -149,7 +149,7 @@ impl FSRSItem {
             .collect()
     }
     #[frb(sync)]
-    pub fn set_reviews(&mut self, other: Vec<FSRSReview>) {
+    pub fn set_reviews(&mut self, other: &[FSRSReview]) {
         self.0.reviews = other.iter().map(|x| x.0).collect()
     }
     #[frb(sync, getter)]
