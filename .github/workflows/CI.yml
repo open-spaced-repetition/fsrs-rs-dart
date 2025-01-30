@@ -39,7 +39,7 @@ jobs:
           set -eux -o pipefail
           curl -fsSL https://fvm.app/install.sh | bash
           cargo binstall --no-confirm --no-symlinks --force cargo-expand
-          cargo binstall --no-confirm --no-symlinks --force flutter_rust_bridge_codegen --version "2.7.0"
+          cargo binstall --no-confirm --no-symlinks --force flutter_rust_bridge_codegen --version "2.7.1"
 
       - name: Generate bridge code
         run: |
@@ -47,7 +47,7 @@ jobs:
           mkdir -p lib/src/rust
           flutter_rust_bridge_codegen generate
           # just ensure the version
-          sed -i "s/2.7.1/2.7.0/g" rust/src/frb_generated.rs
+          sed -i "s/2.7.0/2.7.1/g" rust/src/frb_generated.rs
 
       - name: Flutter pub get
         run: flutter pub get
