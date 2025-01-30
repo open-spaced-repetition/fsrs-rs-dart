@@ -47,13 +47,16 @@ jobs:
           mkdir -p lib/src/rust
           flutter_rust_bridge_codegen generate
           # just ensure the version
-          sed -i "s/2.7.0/2.7.1/g" rust/src/frb_generated.rs
+          sed -i --debug "s/2.7.1/2.7.0/g" rust/src/frb_generated.rs
 
       - name: Flutter pub get
         run: flutter pub get
 
       - name: build lib
         run: cd rust && cargo build --release
+
+      - name: Debugging with tmate
+        uses: mxschmitt/action-tmate@v3.19
 
       - name: test
         run: |
