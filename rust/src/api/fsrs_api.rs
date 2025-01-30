@@ -1,3 +1,5 @@
+use std::sync::Mutex;
+
 use flutter_rust_bridge::frb;
 
 #[frb(init)]
@@ -5,12 +7,13 @@ pub fn init_app() {
     flutter_rust_bridge::setup_default_user_utils();
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug)]
 #[frb(opaque)]
-pub struct FSRS(fsrs::FSRS);
+pub struct FSRS(Mutex<fsrs::FSRS>);
 impl FSRS {
+    #[frb(sync)]
     pub fn new(parameters: Vec<f32>) -> Self {
-        Self(fsrs::FSRS::new(Some(&parameters)).unwrap())
+        Self(fsrs::FSRS::new(Some(&parameters)).unwrap().into())
     }
     #[frb(sync)]
     pub fn next_states(
@@ -21,23 +24,33 @@ impl FSRS {
     ) -> NextStates {
         NextStates(
             self.0
+                .lock()
+                .unwrap()
                 .next_states(
-                    current_memory_state.map(|x| x.0),
+                    current_memory_state.map(|x| x.0.clone()),
                     desired_retention,
                     days_elapsed,
                 )
-                .unwrap(),
+                .unwrap()
+                .into(),
         )
     }
-    pub fn compute_parameters(&self, train_set: Vec<FSRSItem>) -> Vec<f32> {
+    #[frb(sync)]
+    pub fn compute_parameters(&self, train_set: &[FSRSItem]) -> Vec<f32> {
         self.0
+            .lock()
+            .unwrap()
             .compute_parameters(train_set.iter().map(|x| x.0.clone()).collect(), None, true)
             .unwrap_or_default()
     }
-    pub fn benchmark(&self, train_set: Vec<FSRSItem>) -> Vec<f32> {
+    #[frb(sync)]
+    pub fn benchmark(&self, train_set: &[FSRSItem]) -> Vec<f32> {
         self.0
+            .lock()
+            .unwrap()
             .benchmark(train_set.iter().map(|x| x.0.clone()).collect(), true)
     }
+    #[frb(sync)]
     pub fn memory_state_from_sm2(
         &self,
         ease_factor: f32,
@@ -46,23 +59,31 @@ impl FSRS {
     ) -> MemoryState {
         MemoryState(
             self.0
+                .lock()
+                .unwrap()
                 .memory_state_from_sm2(ease_factor, interval, sm2_retention)
-                .unwrap(),
+                .unwrap()
+                .into(),
         )
     }
+    #[frb(sync)]
     pub fn memory_state(&self, item: FSRSItem, starting_state: Option<MemoryState>) -> MemoryState {
         MemoryState(
             self.0
-                .memory_state(item.0, starting_state.map(|x| x.0))
-                .unwrap(),
+                .lock()
+                .unwrap()
+                .memory_state(item.0, starting_state.map(|x| x.0.clone()))
+                .unwrap()
+                .into(),
         )
     }
 }
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Copy)]
 #[frb(opaque)]
 pub struct MemoryState(fsrs::MemoryState);
 
 impl MemoryState {
+    #[frb(sync)]
     pub fn new(stability: f32, difficulty: f32) -> Self {
         Self(fsrs::MemoryState {
             stability,
@@ -100,14 +121,11 @@ pub struct ItemState(fsrs::ItemState);
 impl ItemState {
     #[frb(sync, getter)]
     pub fn memory(&self) -> MemoryState {
-        MemoryState(self.0.memory.clone())
+        MemoryState(self.0.memory.clone().into())
     }
     #[frb(sync, getter)]
     pub fn interval(&self) -> f32 {
         self.0.interval
-    }
-    pub fn __repr__(&self) -> String {
-        format!("{:?}", self.0)
     }
 }
 
@@ -117,11 +135,12 @@ pub struct FSRSItem(fsrs::FSRSItem);
 
 impl FSRSItem {
     #[frb(sync)]
-    pub fn new(reviews: Vec<FSRSReview>) -> Self {
+    pub fn new(reviews: &[FSRSReview]) -> Self {
         Self(fsrs::FSRSItem {
             reviews: reviews.iter().map(|x| x.0).collect(),
         })
     }
+    #[frb(sync, getter)]
     pub fn get_reviews(&self) -> Vec<FSRSReview> {
         self.0
             .reviews
@@ -129,10 +148,11 @@ impl FSRSItem {
             .map(|x| FSRSReview(x.clone()))
             .collect()
     }
-    pub fn set_reviews(&mut self, other: Vec<FSRSReview>) {
+    #[frb(sync)]
+    pub fn set_reviews(&mut self, other: &[FSRSReview]) {
         self.0.reviews = other.iter().map(|x| x.0).collect()
     }
-
+    #[frb(sync, getter)]
     pub fn long_term_review_cnt(&self) -> usize {
         self.0
             .reviews
@@ -140,12 +160,9 @@ impl FSRSItem {
             .filter(|review| review.delta_t > 0)
             .count()
     }
-    pub fn __repr__(&self) -> String {
-        return format!("{:?}", self.0);
-    }
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Copy)]
 #[frb(opaque)]
 pub struct FSRSReview(fsrs::FSRSReview);
 
@@ -154,11 +171,8 @@ impl FSRSReview {
     pub fn new(rating: u32, delta_t: u32) -> Self {
         Self(fsrs::FSRSReview { rating, delta_t })
     }
-    pub fn __repr__(&self) -> String {
-        return format!("{:?}", self.0);
-    }
 }
-
+#[frb(sync)]
 pub const fn DEFAULT_PARAMETERS() -> [f32; 19] {
     [
         0.40255, 1.18385, 3.173, 15.69105, 7.1949, 0.5345, 1.4604, 0.0046, 1.54575, 0.1192,
