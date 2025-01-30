@@ -53,7 +53,12 @@ jobs:
         run: flutter pub get
 
       - name: build lib
-        run: cd rust && cargo build --release
+        run: |
+          set -eux -o pipefail
+          pushd rust
+          cargo clippy -- -D warnings
+          cargo fmt -- --check
+          cargo build --release
 
       - name: test
         run: |
