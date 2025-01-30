@@ -65,6 +65,10 @@ jobs:
           pushd rust
           cargo build --release
 
+      - name: Debugging with tmate
+        uses: mxschmitt/action-tmate@v3.19
+
+
       - name: test
         run: |
           dart run lib/example.dart
