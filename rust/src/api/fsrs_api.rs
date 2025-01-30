@@ -1,3 +1,5 @@
+use std::sync::Mutex;
+
 use flutter_rust_bridge::frb;
 
 #[frb(init)]
@@ -5,12 +7,12 @@ pub fn init_app() {
     flutter_rust_bridge::setup_default_user_utils();
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug)]
 #[frb(opaque)]
-pub struct FSRS(fsrs::FSRS);
+pub struct FSRS(Mutex<fsrs::FSRS>);
 impl FSRS {
     pub fn new(parameters: Vec<f32>) -> Self {
-        Self(fsrs::FSRS::new(Some(&parameters)).unwrap())
+        Self(fsrs::FSRS::new(Some(&parameters)).unwrap().into())
     }
     pub fn next_states(
         &self,
@@ -20,21 +22,28 @@ impl FSRS {
     ) -> NextStates {
         NextStates(
             self.0
+                .lock()
+                .unwrap()
                 .next_states(
-                    current_memory_state.map(|x| x.0),
+                    current_memory_state.map(|x| x.0.clone()),
                     desired_retention,
                     days_elapsed,
                 )
-                .unwrap(),
+                .unwrap()
+                .into(),
         )
     }
     pub fn compute_parameters(&self, train_set: Vec<FSRSItem>) -> Vec<f32> {
         self.0
+            .lock()
+            .unwrap()
             .compute_parameters(train_set.iter().map(|x| x.0.clone()).collect(), None, true)
             .unwrap_or_default()
     }
     pub fn benchmark(&self, train_set: Vec<FSRSItem>) -> Vec<f32> {
         self.0
+            .lock()
+            .unwrap()
             .benchmark(train_set.iter().map(|x| x.0.clone()).collect(), true)
     }
     pub fn memory_state_from_sm2(
@@ -45,19 +54,25 @@ impl FSRS {
     ) -> MemoryState {
         MemoryState(
             self.0
+                .lock()
+                .unwrap()
                 .memory_state_from_sm2(ease_factor, interval, sm2_retention)
-                .unwrap(),
+                .unwrap()
+                .into(),
         )
     }
     pub fn memory_state(&self, item: FSRSItem, starting_state: Option<MemoryState>) -> MemoryState {
         MemoryState(
             self.0
-                .memory_state(item.0, starting_state.map(|x| x.0))
-                .unwrap(),
+                .lock()
+                .unwrap()
+                .memory_state(item.0, starting_state.map(|x| x.0.clone()))
+                .unwrap()
+                .into(),
         )
     }
 }
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Copy)]
 #[frb(opaque)]
 pub struct MemoryState(fsrs::MemoryState);
 
@@ -94,7 +109,7 @@ pub struct ItemState(fsrs::ItemState);
 
 impl ItemState {
     pub fn memory(&self) -> MemoryState {
-        MemoryState(self.0.memory.clone())
+        MemoryState(self.0.memory.clone().into())
     }
     pub fn interval(&self) -> f32 {
         self.0.interval
@@ -130,7 +145,7 @@ impl FSRSItem {
     }
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Copy)]
 #[frb(opaque)]
 pub struct FSRSReview(fsrs::FSRSReview);
 
