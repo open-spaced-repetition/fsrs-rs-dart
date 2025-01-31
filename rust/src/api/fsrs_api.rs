@@ -151,7 +151,7 @@ pub struct FSRSItem(fsrs::FSRSItem);
 
 impl FSRSItem {
     #[frb(sync)]
-    pub fn new(reviews: &[RustAutoOpaqueNom<FSRSReview>]) -> Self {
+    pub fn new(reviews: Vec<RustAutoOpaqueNom<FSRSReview>>) -> Self {
         Self(fsrs::FSRSItem {
             reviews: reviews.iter().map(|x| x.blocking_read().0).collect(),
         })
@@ -165,8 +165,8 @@ impl FSRSItem {
             .collect()
     }
     #[frb(sync)]
-    pub fn set_reviews(&mut self, other: &[FSRSReview]) {
-        self.0.reviews = other.iter().map(|x| x.0).collect()
+    pub fn set_reviews(&mut self, other: Vec<RustAutoOpaqueNom<FSRSReview>>) {
+        self.0.reviews = other.iter().map(|x| x.blocking_read().0).collect()
     }
     #[frb(sync, getter)]
     pub fn long_term_review_cnt(&self) -> usize {
