@@ -25,7 +25,8 @@ jobs:
 
       - name: Rust cache
         uses: Swatinem/rust-cache@v2
-        working-directory: rust
+        with:
+          workspaces: "rust -> target"
 
       - name: Install Flutter
         uses: subosito/flutter-action@v2
