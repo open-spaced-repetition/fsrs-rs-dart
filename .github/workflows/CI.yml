@@ -75,8 +75,7 @@ jobs:
           dart run lib/example.dart
           dart run lib/migrate.dart
           dart run lib/schedule.dart
-
-         # dart run lib/optimize.dart
+          dart run lib/optimize.dart
 
 
 
