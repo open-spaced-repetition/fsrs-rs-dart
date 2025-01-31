@@ -65,6 +65,8 @@ jobs:
           pushd rust
           cargo build --release
 
+      - name: Debugging with tmate
+        uses: mxschmitt/action-tmate@v3.19
 
       - name: test
         run: |
@@ -74,8 +76,7 @@ jobs:
 
          # dart run lib/optimize.dart
 
-      # - name: Debugging with tmate
-      #   uses: mxschmitt/action-tmate@v3.19
+
 
       # - name: Flutter analyze
       #   run: flutter analyze
