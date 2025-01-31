@@ -1,5 +1,6 @@
 use std::sync::Mutex;
 
+use crate::frb_generated::RustAutoOpaque;
 use flutter_rust_bridge::frb;
 
 #[frb(init)]
@@ -151,9 +152,9 @@ pub struct FSRSItem(fsrs::FSRSItem);
 
 impl FSRSItem {
     #[frb(sync)]
-    pub fn new(reviews: &[FSRSReview]) -> Self {
+    pub fn new(reviews: &[RustAutoOpaque<FSRSReview>]) -> Self {
         Self(fsrs::FSRSItem {
-            reviews: reviews.iter().map(|x| x.0).collect(),
+            reviews: reviews.iter().map(|x| x.blocking_read().0).collect(),
         })
     }
     #[frb(sync, getter)]
@@ -165,8 +166,8 @@ impl FSRSItem {
             .collect()
     }
     #[frb(sync)]
-    pub fn set_reviews(&mut self, other: &[FSRSReview]) {
-        self.0.reviews = other.iter().map(|x| x.0).collect()
+    pub fn set_reviews(&mut self, other: &[RustAutoOpaque<FSRSReview>]) {
+        self.0.reviews = other.iter().map(|x| x.blocking_read().0).collect()
     }
     #[frb(sync, getter)]
     pub fn long_term_review_cnt(&self) -> usize {
