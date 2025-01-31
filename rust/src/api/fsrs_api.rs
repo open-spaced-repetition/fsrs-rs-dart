@@ -77,6 +77,10 @@ impl FSRS {
                 .into(),
         )
     }
+    #[frb(sync)]
+    pub fn to_string(&self) -> String {
+        format!("{:?}", self.0.lock().unwrap())
+    }
 }
 #[derive(Debug, Clone, Copy)]
 #[frb(opaque)]
@@ -89,6 +93,10 @@ impl MemoryState {
             stability,
             difficulty,
         })
+    }
+    #[frb(sync)]
+    pub fn to_string(&self) -> String {
+        format!("{:?}", self.0)
     }
 }
 
@@ -112,6 +120,10 @@ impl NextStates {
     pub fn again(&self) -> ItemState {
         ItemState(self.0.again.clone())
     }
+    #[frb(sync)]
+    pub fn to_string(&self) -> String {
+        format!("{:?}", self.0)
+    }
 }
 
 #[derive(Debug, Clone)]
@@ -121,11 +133,15 @@ pub struct ItemState(fsrs::ItemState);
 impl ItemState {
     #[frb(sync, getter)]
     pub fn memory(&self) -> MemoryState {
-        MemoryState(self.0.memory.clone().into())
+        MemoryState(self.0.memory.clone())
     }
     #[frb(sync, getter)]
     pub fn interval(&self) -> f32 {
         self.0.interval
+    }
+    #[frb(sync)]
+    pub fn to_string(&self) -> String {
+        format!("{:?}", self.0)
     }
 }
 
@@ -160,6 +176,10 @@ impl FSRSItem {
             .filter(|review| review.delta_t > 0)
             .count()
     }
+    #[frb(sync)]
+    pub fn to_string(&self) -> String {
+        format!("{:?}", self.0)
+    }
 }
 
 #[derive(Debug, Clone, Copy)]
@@ -170,6 +190,10 @@ impl FSRSReview {
     #[frb(sync)]
     pub fn new(rating: u32, delta_t: u32) -> Self {
         Self(fsrs::FSRSReview { rating, delta_t })
+    }
+    #[frb(sync)]
+    pub fn to_string(&self) -> String {
+        format!("{:?}", self.0)
     }
 }
 
