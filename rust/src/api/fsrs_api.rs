@@ -1,6 +1,6 @@
 use std::sync::Mutex;
 
-use flutter_rust_bridge::{frb, RustAutoOpaqueNom};
+use flutter_rust_bridge::frb;
 
 #[frb(init)]
 pub fn init_app() {
@@ -151,7 +151,7 @@ pub struct FSRSItem(fsrs::FSRSItem);
 
 impl FSRSItem {
     #[frb(sync)]
-    pub fn new(reviews: Vec<RustAutoOpaqueNom<FSRSReview>>) -> Self {
+    pub fn new(reviews: &[RustAutoOpaque<FSRSReview>]) -> Self {
         Self(fsrs::FSRSItem {
             reviews: reviews.iter().map(|x| x.blocking_read().0).collect(),
         })
@@ -165,7 +165,7 @@ impl FSRSItem {
             .collect()
     }
     #[frb(sync)]
-    pub fn set_reviews(&mut self, other: Vec<RustAutoOpaqueNom<FSRSReview>>) {
+    pub fn set_reviews(&mut self, other: &[RustAutoOpaque<FSRSReview>]) {
         self.0.reviews = other.iter().map(|x| x.blocking_read().0).collect()
     }
     #[frb(sync, getter)]
