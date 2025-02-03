@@ -48,10 +48,7 @@ jobs:
       - name: Generate bridge code
         run: |
           set -eux -o pipefail
-          mkdir -p lib/src/rust
           flutter_rust_bridge_codegen generate
-          # just ensure the version
-          # sed -i --debug "s/2.7.1/2.7.0/g" rust/src/frb_generated.rs
 
       - name: Flutter pub get
         run: flutter pub get
@@ -69,10 +66,5 @@ jobs:
           dart run lib/migrate.dart
           dart run lib/schedule.dart
           dart run lib/optimize.dart
+          flutter analyze
 
-      # - name: Debugging with tmate
-      #   uses: mxschmitt/action-tmate@v3.19
-
-
-      # - name: Flutter analyze
-      #   run: flutter analyze

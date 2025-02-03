@@ -18,6 +18,7 @@
     pkgs.gcc
     pkgs.htop
     pkgs.fastfetch
+    pkgs.cargo-expand
   ];
 
   # Sets environment variables in the workspace
@@ -54,11 +55,13 @@
       onCreate = {
         # Example: install JS dependencies from NPM
         # npm-install = "npm install";
+        "setup" = "flutter pub get; rustup default stable; cd rust && cargo build -r";
       };
       # Runs when the workspace is (re)started
       onStart = {
         # Example: start a background task to watch and re-build backend code
         # watch-backend = "npm run watch-backend";
+        "setup" = "flutter pub get; rustup default stable; cd rust && cargo build -r";
       };
     };
   };
