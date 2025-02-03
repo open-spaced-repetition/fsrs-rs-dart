@@ -1,4 +1,3 @@
-import 'package:collection/collection.dart';
 import 'src/rust/frb_generated.dart';
 import 'src/rust/api/fsrs_api.dart';
 

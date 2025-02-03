@@ -4,7 +4,7 @@ A Rust implementation of the Free Spaced Repetition Scheduler (FSRS) algorithm w
 
 ## Examples
 
-see [example](./lib/example.dart)
+see [example](./lib)
 
 ## Features
 
@@ -13,6 +13,14 @@ see [example](./lib/example.dart)
 - Memory state management
 - Review scheduling
 - Item state tracking
+
+---
+
+## Online development
+
+go to <https://idx.google.com/import>
+
+---
 
 ## Prerequisites
 
