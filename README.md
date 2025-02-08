@@ -35,6 +35,9 @@ git clone <repository-url>
 cd fsrs-rs-dart
 flutter_rust_bridge_codegen generate
 flutter pub get
+cd rust
+cargo build -r
+cd ..
 flutter analyze
 ```
 
