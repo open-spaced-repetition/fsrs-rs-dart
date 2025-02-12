@@ -69,7 +69,7 @@ fn wire__crate__api__fsrs_api__DEFAULT_PARAMETERS_impl(
                 flutter_rust_bridge::for_generated::SseDeserializer::new(message);
             deserializer.end();
             transform_result_sse::<_, ()>((move || {
-                let output_ok = Result::<_, ()>::Ok(crate::api::fsrs_api::DEFAULT_PARAMETERS())?;
+                let output_ok = Result::<_, ()>::Ok(crate::api::fsrs_api::DEFAULT_PARAMETERS)?;
                 Ok(output_ok)
             })())
         },
