@@ -11,11 +11,11 @@
     # pkgs.python311Packages.pip
     # pkgs.nodejs_20
     # pkgs.nodePackages.nodemon
-    pkgs.flutter
+    pkgs.dart
     pkgs.fish
     pkgs.rustup
     pkgs.cargo-binstall
-    pkgs.gcc
+    pkgs.stdenv.cc
     pkgs.htop
     pkgs.fastfetch
     pkgs.cargo-expand
@@ -28,7 +28,6 @@
     extensions = [
       # "vscodevim.vim"
       "dart-code.dart-code"
-      "Dart-Code.flutter"
       "rust-lang.rust-analyzer"
     ];
 
@@ -55,13 +54,13 @@
       onCreate = {
         # Example: install JS dependencies from NPM
         # npm-install = "npm install";
-        "setup" = "flutter pub get; rustup default stable; cd rust && cargo build -r";
+        "setup" = "dart pub get; rustup default stable; cd rust && cargo build -r";
       };
       # Runs when the workspace is (re)started
       onStart = {
         # Example: start a background task to watch and re-build backend code
         # watch-backend = "npm run watch-backend";
-        "setup" = "flutter pub get; rustup default stable; cd rust && cargo build -r";
+        "setup" = "dart pub get; rustup default stable; cd rust && cargo build -r";
       };
     };
   };
