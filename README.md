@@ -4,7 +4,7 @@ A Rust implementation of the Free Spaced Repetition Scheduler (FSRS) algorithm w
 
 ## Examples
 
-see [example](./lib)
+see [example](./examples)
 
 ## Features
 
