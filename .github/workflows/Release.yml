@@ -51,6 +51,10 @@ jobs:
       - name: Install cross
         run: cargo install cross --git https://github.com/cross-rs/cross --force
 
+      - name: rustup target add x86_64-apple-darwin
+        if: matrix.target == 'x86_64-apple-darwin'
+        run: rustup target add x86_64-apple-darwin
+
       - name: Build on linux
         if: runner.os == 'Linux'
         run: |
@@ -61,9 +65,7 @@ jobs:
         run: |
           cd rust
           cargo build --release --target ${{ matrix.target }}
-      - name: rustup target add x86_64-apple-darwin
-        if: matrix.target == 'x86_64-apple-darwin'
-        run: rustup target add x86_64-apple-darwin
+
 
       - name: Upload build artifact (per platform)
         uses: actions/upload-artifact@v4
