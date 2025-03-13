@@ -47,9 +47,15 @@ jobs:
         run: cargo install cross --git https://github.com/cross-rs/cross
 
       - name: Build on linux
+        if: runner.os == 'Linux'
         run: |
           cd rust
           cross build --release --target ${{ matrix.target }}
+      - name: Build
+        if: runner.os != 'Linux'
+        run: |
+          cd rust
+          cargo build --release --target ${{ matrix.target }}
 
       - name: Upload build artifact (per platform)
         uses: actions/upload-artifact@v4
