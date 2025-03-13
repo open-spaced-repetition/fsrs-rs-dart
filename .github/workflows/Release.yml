@@ -93,11 +93,12 @@ jobs:
         - name: Move artifacts to release
           run: |
             cp -av ./artifacts/* rust/target/release/
-            rm -vrf ./**/*.a
-            rm -vrf ./**/*.d
-            rm -vrf ./**/*.pdb
-            rm -vrf ./**/*.exp
-            rm -vrf ./**/*.lib
+            find rust -name "*.a" -print -delete
+            find rust -name "*.d" -print -delete
+            find rust -name "*.pdb" -print -delete
+            find rust -name "*.exp" -print -delete
+            find rust -name "*.lib" -print -delete
+
         - name: Show Result
           run: |
             cd rust
