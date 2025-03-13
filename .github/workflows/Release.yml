@@ -1,0 +1,73 @@
+name: Cross-Platform Build
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [windows-latest, macos-latest, ubuntu-latest]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/bin/
+            ~/.cargo/registry/index/
+            ~/.cargo/registry/cache/
+            ~/.cargo/git/db/
+            rust/target/
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.toml') }}
+      - name: Set up Rust
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          override: true
+
+      - name: Build
+        run: |
+          cd rust
+          cargo build --release
+
+      - name: Upload build artifact (per platform)
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-${{ matrix.os }}  # 每个平台的构建产物单独上传
+          path: rust/target/release/*fsrs*
+
+  #Linux的workflow用来整合所有的二进制文件
+  combine-artifacts:
+      needs: build
+      runs-on: ubuntu-latest
+      steps:
+        - name: Checkout code
+          uses: actions/checkout@v3
+        - name: create release dir
+          run: |
+            cd rust
+            mkdir -p target/release/
+
+        - name: Download all artifacts
+          uses: actions/download-artifact@v4
+          with:
+            path: artifacts #下载到artifacts文件夹
+
+        - name: Move artifacts to release
+          run: |
+            find . -name "*fsrs*.dll" -print -exec mv {} rust/target/release/ \;
+            find . -name "*fsrs*.dylib" -print -exec mv {} rust/target/release/ \;
+            find . -name "*fsrs*.so" -print -exec mv {} rust/target/release/ \;
+        - name: Show Result
+          run: |
+            cd rust
+            ls -R .
+        - name: Upload combined build artifacts
+          uses: actions/upload-artifact@v4
+          with:
+              name: combined-release
+              path: rust/target/release/
