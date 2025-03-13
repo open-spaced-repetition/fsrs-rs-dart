@@ -9,7 +9,26 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [windows-latest, macos-latest, ubuntu-latest]
+        include:
+          - os: ubuntu-latest
+            target: x86_64-unknown-linux-gnu
+            target_suffix: x86_64
+          - os: ubuntu-latest
+            target: aarch64-unknown-linux-gnu
+            target_suffix: aarch64
+          - os: ubuntu-latest
+            target: armv7-unknown-linux-gnueabihf
+            target_suffix: armv7
+          - os: windows-latest
+            target: x86_64-pc-windows-msvc
+            target_suffix: win_x86_64
+          - os: macos-latest
+            target: x86_64-apple-darwin
+            target_suffix: macos_x86_64
+          - os: macos-latest
+            target: aarch64-apple-darwin
+            target_suffix: macos_aarch64
+
 
     steps:
       - name: Checkout code
@@ -22,23 +41,37 @@ jobs:
             ~/.cargo/registry/cache/
             ~/.cargo/git/db/
             rust/target/
-          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.toml') }}
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.toml') }}-${{ matrix.target }} # Include target in cache key
       - name: Set up Rust
         uses: actions-rs/toolchain@v1
         with:
           toolchain: stable
           override: true
 
-      - name: Build
+      - name: Install cross
+        run: cargo install cross --git https://github.com/cross-rs/cross --force
+
+      - name: rustup target add x86_64-apple-darwin
+        if: matrix.target == 'x86_64-apple-darwin'
+        run: rustup target add x86_64-apple-darwin
+
+      - name: Build on linux
+        if: runner.os == 'Linux'
         run: |
           cd rust
-          cargo build --release
+          cross build --release --target ${{ matrix.target }}
+      - name: Build
+        if: runner.os != 'Linux'
+        run: |
+          cd rust
+          cargo build --release --target ${{ matrix.target }}
+
 
       - name: Upload build artifact (per platform)
         uses: actions/upload-artifact@v4
         with:
-          name: build-${{ matrix.os }}  # 每个平台的构建产物单独上传
-          path: rust/target/release/*fsrs*
+          name: ${{ matrix.target }} # Unique artifact name!
+          path: rust/target/${{ matrix.target }}/release/*fsrs*
 
   #Linux的workflow用来整合所有的二进制文件
   combine-artifacts:
@@ -59,9 +92,13 @@ jobs:
 
         - name: Move artifacts to release
           run: |
-            find . -name "*fsrs*.dll" -print -exec mv {} rust/target/release/ \;
-            find . -name "*fsrs*.dylib" -print -exec mv {} rust/target/release/ \;
-            find . -name "*fsrs*.so" -print -exec mv {} rust/target/release/ \;
+            cp -av ./artifacts/* rust/target/release/
+            find rust -name "*.a" -print -delete
+            find rust -name "*.d" -print -delete
+            find rust -name "*.pdb" -print -delete
+            find rust -name "*.exp" -print -delete
+            find rust -name "*.lib" -print -delete
+
         - name: Show Result
           run: |
             cd rust
