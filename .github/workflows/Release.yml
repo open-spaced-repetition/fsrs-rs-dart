@@ -37,11 +37,8 @@ jobs:
       needs: build
       runs-on: ubuntu-latest
       steps:
-        - name: Set up Rust
-          uses: actions-rs/toolchain@v1
-          with:
-            toolchain: stable
-            override: true
+        - name: Checkout code
+          uses: actions/checkout@v3
         - name: create release dir
           run: |
             cd rust
