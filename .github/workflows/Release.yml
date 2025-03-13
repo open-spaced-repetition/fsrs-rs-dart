@@ -1,0 +1,65 @@
+name: Cross-Platform Build
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [windows-latest, macos-latest, ubuntu-latest]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Rust
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          override: true
+
+      - name: Build
+        run: |
+          cd rust
+          cargo build --release
+
+      - name: Upload build artifact (per platform)
+        uses: actions/upload-artifact@v3
+        with:
+          name: build-${{ matrix.os }}  # 每个平台的构建产物单独上传
+          path: rust/target/release/
+
+  #Linux的workflow用来整合所有的二进制文件
+  combine-artifacts:
+      needs: build
+      runs-on: ubuntu-latest
+      steps:
+        - name: Set up Rust
+          uses: actions-rs/toolchain@v1
+          with:
+            toolchain: stable
+            override: true
+        - name: create release dir
+          run: |
+            cd rust
+            mkdir -p target/release/
+
+        - name: Download all artifacts
+          uses: actions/download-artifact@v3
+          with:
+            path: artifacts #下载到artifacts文件夹
+
+        - name: Move artifacts to release
+          run: |
+            cd rust
+            find artifacts -name "*.dll" -print -exec mv {} target/release/ \;
+            find artifacts -name "*.dylib" -print -exec mv {} target/release/ \;
+            find artifacts -name "*.so" -print -exec mv {} target/release/ \;
+        - name: Upload combined build artifacts
+          uses: actions/upload-artifact@v3
+          with:
+              name: combined-release
+              path: rust/target/release/
