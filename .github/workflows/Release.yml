@@ -27,7 +27,7 @@ jobs:
           cargo build --release
 
       - name: Upload build artifact (per platform)
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: build-${{ matrix.os }}  # 每个平台的构建产物单独上传
           path: rust/target/release/
