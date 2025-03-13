@@ -70,7 +70,7 @@ jobs:
       - name: Upload build artifact (per platform)
         uses: actions/upload-artifact@v4
         with:
-          name: build-${{ matrix.os }}-${{ matrix.target }} # Unique artifact name!
+          name: ${{ matrix.target }} # Unique artifact name!
           path: rust/target/${{ matrix.target }}/release/*fsrs*
 
   #Linux的workflow用来整合所有的二进制文件
@@ -93,6 +93,11 @@ jobs:
         - name: Move artifacts to release
           run: |
             cp -av ./artifacts/* rust/target/release/
+            rm -vrf ./**/*.a
+            rm -vrf ./**/*.d
+            rm -vrf ./**/*.pdb
+            rm -vrf ./**/*.exp
+            rm -vrf ./**/*.lib
         - name: Show Result
           run: |
             cd rust
