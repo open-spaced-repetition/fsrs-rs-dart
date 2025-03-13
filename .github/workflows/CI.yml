@@ -29,10 +29,6 @@ jobs:
           flutter-version: ${{ env.FLUTTER_VERSION }}
           channel: 'stable'
 
-      - name: Install flutter_rust_bridge_codegen and cargo-expand and fvm
-        run: |
-          # cargo binstall --no-confirm --no-symlinks --force flutter_rust_bridge_codegen --version "2.8.0"
-
       - name: lint lib before codegen
         run: |
           set -eux -o pipefail
@@ -52,8 +48,5 @@ jobs:
 
       - name: test
         run: |
-          dart run lib/example.dart
-          dart run lib/migrate.dart
-          dart run lib/schedule.dart
-          dart run lib/optimize.dart
+          find examples/ -print -exec dart run {} \;
           flutter analyze

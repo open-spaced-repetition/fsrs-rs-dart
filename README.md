@@ -2,9 +2,21 @@
 
 A Rust implementation of the Free Spaced Repetition Scheduler (FSRS) algorithm with Flutter/Dart bindings using flutter_rust_bridge.
 
+## Usage
+
+```dart
+import 'package:fsrs/fsrs.dart';
+
+Future<void> main() async {
+  // Initialize the Rust bridge
+  await RustLib.init();
+  ...
+}
+```
+
 ## Examples
 
-see [example](./lib)
+see [examples](./examples)
 
 ## Features
 

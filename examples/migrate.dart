@@ -1,5 +1,4 @@
-import 'src/rust/frb_generated.dart';
-import 'src/rust/api/fsrs_api.dart';
+import '../lib/fsrs.dart';
 
 void migrateWithFullHistory() {
   // Create a new FSRS instance with default parameters
