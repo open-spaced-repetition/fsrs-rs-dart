@@ -38,7 +38,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: build-${{ matrix.os }}  # 每个平台的构建产物单独上传
-          path: rust/target/release/
+          path: rust/target/release/*fsrs*
 
   #Linux的workflow用来整合所有的二进制文件
   combine-artifacts:
@@ -59,9 +59,13 @@ jobs:
 
         - name: Move artifacts to release
           run: |
-            find . -name "*.dll" -print -exec mv {} target/release/ \;
-            find . -name "*.dylib" -print -exec mv {} target/release/ \;
-            find . -name "*.so" -print -exec mv {} target/release/ \;
+            find . -name "*fsrs*.dll" -print -exec mv {} rust/target/release/ \;
+            find . -name "*fsrs*.dylib" -print -exec mv {} rust/target/release/ \;
+            find . -name "*fsrs*.so" -print -exec mv {} rust/target/release/ \;
+        - name: Show Result
+          run: |
+            cd rust
+            ls -R .
         - name: Upload combined build artifacts
           uses: actions/upload-artifact@v4
           with:
