@@ -45,6 +45,8 @@ jobs:
       - name: Install target
         if: runner.os == 'Linux' # Only necessary on Linux, macOS and Windows have built in support
         run: rustup target add ${{ matrix.target }}
+      - if: runner.target == "armv7-unknown-linux-gnueabihf"
+        run: sudo apt install -y arm-linux-gnueabihf-gcc
 
       - name: Build
         run: |
