@@ -10,6 +10,20 @@ jobs:
     strategy:
       matrix:
         os: [windows-latest, macos-latest, ubuntu-latest]
+        include:
+          - os: ubuntu-latest
+            target: x86_64-unknown-linux-gnu  # Common x86-64 Linux
+          - os: ubuntu-latest
+            target: aarch64-unknown-linux-gnu # ARM64 (common on Raspberry Pi, AWS Graviton, etc.)
+          - os: ubuntu-latest
+            target: armv7-unknown-linux-gnueabihf  # ARMv7 (32-bit, often for older Raspberry Pi)
+          - os: windows-latest
+            target: x86_64-pc-windows-msvc
+          - os: macos-latest
+            target: x86_64-apple-darwin
+          - os: macos-latest
+            target: aarch64-apple-darwin #For apple silicon
+
 
     steps:
       - name: Checkout code
@@ -22,23 +36,26 @@ jobs:
             ~/.cargo/registry/cache/
             ~/.cargo/git/db/
             rust/target/
-          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.toml') }}
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.toml') }}-${{ matrix.target }} # Include target in cache key
       - name: Set up Rust
         uses: actions-rs/toolchain@v1
         with:
           toolchain: stable
           override: true
+      - name: Install target
+        if: runner.os == 'Linux' # Only necessary on Linux, macOS and Windows have built in support
+        run: rustup target add ${{ matrix.target }}
 
       - name: Build
         run: |
           cd rust
-          cargo build --release
+          cargo build --release --target ${{ matrix.target }}
 
       - name: Upload build artifact (per platform)
         uses: actions/upload-artifact@v4
         with:
-          name: build-${{ matrix.os }}  # 每个平台的构建产物单独上传
-          path: rust/target/release/*fsrs*
+          name: build-${{ matrix.os }}-${{ matrix.target }} # Unique artifact name!
+          path: bindings/dart/rust/target/${{ matrix.target }}/release/*fsrs*
 
   #Linux的workflow用来整合所有的二进制文件
   combine-artifacts:
@@ -59,9 +76,7 @@ jobs:
 
         - name: Move artifacts to release
           run: |
-            find . -name "*fsrs*.dll" -print -exec mv {} rust/target/release/ \;
-            find . -name "*fsrs*.dylib" -print -exec mv {} rust/target/release/ \;
-            find . -name "*fsrs*.so" -print -exec mv {} rust/target/release/ \;
+            cp -av ./artifacts/* rust/target/release/
         - name: Show Result
           run: |
             cd rust
