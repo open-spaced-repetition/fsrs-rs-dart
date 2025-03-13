@@ -48,7 +48,7 @@ jobs:
             mkdir -p target/release/
 
         - name: Download all artifacts
-          uses: actions/download-artifact@v3
+          uses: actions/download-artifact@v4
           with:
             path: artifacts #下载到artifacts文件夹
 
@@ -59,7 +59,7 @@ jobs:
             find artifacts -name "*.dylib" -print -exec mv {} target/release/ \;
             find artifacts -name "*.so" -print -exec mv {} target/release/ \;
         - name: Upload combined build artifacts
-          uses: actions/upload-artifact@v3
+          uses: actions/upload-artifact@v4
           with:
               name: combined-release
               path: rust/target/release/
