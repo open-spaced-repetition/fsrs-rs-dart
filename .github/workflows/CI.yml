@@ -49,5 +49,5 @@ jobs:
       - name: test
         run: |
           set -eux -o pipefail
-          find examples/ -print -exec dart run {} \;
+          find examples/ -print -exec dart run {} \+
           flutter analyze
