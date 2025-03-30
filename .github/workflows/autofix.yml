@@ -9,6 +9,8 @@ permissions:
 
 env:
   rust_clippy: stable  # MSRV
+  CARGO_TERM_COLOR: always
+  FLUTTER_VERSION: "3.27.3"
 
 jobs:
   autofix:
@@ -31,6 +33,13 @@ jobs:
       - run: cd rust ; cargo clippy --fix --workspace
       - run: cd rust ; cargo fmt --all
       - run: cargo install flutter_rust_bridge_codegen@2.9.0
+
+      - name: Install Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: 'stable'
+
       - run: flutter_rust_bridge_codegen generate
 
 
