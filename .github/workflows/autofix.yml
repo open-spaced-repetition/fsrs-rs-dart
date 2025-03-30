@@ -33,4 +33,5 @@ jobs:
       - run: cargo install flutter_rust_bridge_codegen@2.9.0
       - run: flutter_rust_bridge_codegen generate
 
+
       - uses: autofix-ci/action@551dded8c6cc8a1054039c8bc0b8b48c51dfc6ef
