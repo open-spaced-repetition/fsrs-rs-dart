@@ -8,7 +8,9 @@ Future<void> main() async {
   final reviewHistoriesOfCards = createReviewHistoriesForCards();
 
   // Convert review histories to FSRSItems
-  final fsrsItems = reviewHistoriesOfCards.expand((history) => convertToFsrsItem(history)).toList();
+  final fsrsItems = reviewHistoriesOfCards
+      .expand((history) => convertToFsrsItem(history))
+      .toList();
   print('Number of FSRS items: ${fsrsItems.length}');
 
   // Create FSRS instance with default parameters

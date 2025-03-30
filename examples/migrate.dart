@@ -11,10 +11,10 @@ void migrateWithFullHistory() {
     new FsrsReview(rating: 4, deltaT: 3),
     new FsrsReview(rating: 3, deltaT: 7),
   ];
-  
+
   final item = new FsrsItem(reviews: reviews);
   final memoryState = fsrs.memoryState(item: item, startingState: null);
-  
+
   print('Migrated memory state: $memoryState');
 }
 
@@ -69,10 +69,10 @@ Future<void> main() async {
 
   print('Migrating with full history:');
   migrateWithFullHistory();
-  
+
   print('\nMigrating with partial history:');
   migrateWithPartialHistory();
-  
+
   print('\nMigrating with latest state only:');
   migrateWithLatestState();
 }
