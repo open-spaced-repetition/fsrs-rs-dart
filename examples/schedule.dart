@@ -21,14 +21,13 @@ Future<void> scheduleNewCard() async {
   const desiredRetention = 0.9;
 
   // Create a new FSRS model
-  final fsrs = new Fsrs(parameters: defaultParameters);
+  final fsrs = new Fsrs(parameters: defaultParameters());
 
   // Get next states for a new card
   final nextStates = fsrs.nextStates(
-    currentMemoryState: card.memoryState, 
-    desiredRetention: desiredRetention,
-    daysElapsed: 0
-  );
+      currentMemoryState: card.memoryState,
+      desiredRetention: desiredRetention,
+      daysElapsed: 0);
 
   // Display the intervals for each rating
   print('Again interval: ${nextStates.again.interval.toStringAsFixed(1)} days');
@@ -38,7 +37,8 @@ Future<void> scheduleNewCard() async {
 
   // Assume the card was reviewed and the rating was 'good'
   final nextState = nextStates.good;
-  final interval = (nextState.interval.round()).clamp(1, double.infinity).toInt();
+  final interval =
+      (nextState.interval.round()).clamp(1, double.infinity).toInt();
 
   // Update the card with the new memory state and interval
   card.memoryState = nextState.memory;
@@ -62,18 +62,17 @@ Future<void> scheduleExistingCard() async {
   const desiredRetention = 0.9;
 
   // Create a new FSRS model
-  final fsrs = new Fsrs(parameters: defaultParameters);
+  final fsrs = new Fsrs(parameters: defaultParameters());
 
   // Calculate the elapsed time since the last review
-  final elapsedDays = DateTime.now().toUtc().difference(card.lastReview!).inDays;
+  final elapsedDays =
+      DateTime.now().toUtc().difference(card.lastReview!).inDays;
 
   // Get next states for an existing card
-  final nextStates =
-      fsrs.nextStates(
-        currentMemoryState: card.memoryState,
-        desiredRetention: desiredRetention,
-        daysElapsed: elapsedDays
-  );
+  final nextStates = fsrs.nextStates(
+      currentMemoryState: card.memoryState,
+      desiredRetention: desiredRetention,
+      daysElapsed: elapsedDays);
 
   // Display the intervals for each rating
   print('Again interval: ${nextStates.again.interval.toStringAsFixed(1)} days');

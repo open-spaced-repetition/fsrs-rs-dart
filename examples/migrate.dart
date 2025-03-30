@@ -2,7 +2,7 @@ import '../lib/fsrs.dart';
 
 void migrateWithFullHistory() {
   // Create a new FSRS instance with default parameters
-  final fsrs = new Fsrs(parameters: defaultParameters);
+  final fsrs = new Fsrs(parameters: defaultParameters());
 
   // Simulate a full review history for a card
   final reviews = [
@@ -11,15 +11,15 @@ void migrateWithFullHistory() {
     new FsrsReview(rating: 4, deltaT: 3),
     new FsrsReview(rating: 3, deltaT: 7),
   ];
-  
+
   final item = new FsrsItem(reviews: reviews);
   final memoryState = fsrs.memoryState(item: item, startingState: null);
-  
+
   print('Migrated memory state: $memoryState');
 }
 
 void migrateWithPartialHistory() {
-  final fsrs = new Fsrs(parameters: defaultParameters);
+  final fsrs = new Fsrs(parameters: defaultParameters());
 
   // Set the true retention of the original algorithm
   const sm2Retention = 0.9;
@@ -47,7 +47,7 @@ void migrateWithPartialHistory() {
 }
 
 void migrateWithLatestState() {
-  final fsrs = new Fsrs(parameters: defaultParameters);
+  final fsrs = new Fsrs(parameters: defaultParameters());
 
   // Set the true retention of the original algorithm
   const sm2Retention = 0.9;
@@ -69,10 +69,10 @@ Future<void> main() async {
 
   print('Migrating with full history:');
   migrateWithFullHistory();
-  
+
   print('\nMigrating with partial history:');
   migrateWithPartialHistory();
-  
+
   print('\nMigrating with latest state only:');
   migrateWithLatestState();
 }

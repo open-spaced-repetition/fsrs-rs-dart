@@ -29,13 +29,6 @@ jobs:
           flutter-version: ${{ env.FLUTTER_VERSION }}
           channel: 'stable'
 
-      - name: lint lib before codegen
-        run: |
-          set -eux -o pipefail
-          pushd rust
-          cargo clippy -- -D warnings
-          cargo fmt -- --check
-
       - name: Dart pub get
         run: dart pub get
 

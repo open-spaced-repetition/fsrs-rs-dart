@@ -8,12 +8,14 @@ Future<void> main() async {
   final reviewHistoriesOfCards = createReviewHistoriesForCards();
 
   // Convert review histories to FSRSItems
-  final fsrsItems = reviewHistoriesOfCards.expand((history) => convertToFsrsItem(history)).toList();
+  final fsrsItems = reviewHistoriesOfCards
+      .expand((history) => convertToFsrsItem(history))
+      .toList();
   print('Number of FSRS items: ${fsrsItems.length}');
 
   // Create FSRS instance with default parameters
-  final fsrs = new Fsrs(parameters: defaultParameters);
-  print('Default parameters: ${defaultParameters}');
+  final fsrs = new Fsrs(parameters: defaultParameters());
+  print('Default parameters: ${defaultParameters()}');
 
   // Optimize parameters
   final optimizedParameters = fsrs.computeParameters(trainSet: fsrsItems);
