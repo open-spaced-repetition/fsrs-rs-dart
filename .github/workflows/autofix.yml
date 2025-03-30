@@ -26,13 +26,9 @@ jobs:
             ~/.cargo/git/db/
             rust/target/
           key: autofix-${{ hashFiles('**/Cargo.lock') }}
-          
+
       - run: rustup toolchain install ${{ env.rust_clippy }} --profile minimal --component rustfmt --component clippy
       - run: rustup default ${{ env.rust_clippy }}
-
-      - run: cd rust ; cargo clippy --fix --workspace
-      - run: cd rust ; cargo fmt --all
-      - run: cargo install flutter_rust_bridge_codegen@2.9.0
 
       - name: Install Flutter
         uses: subosito/flutter-action@v2
@@ -40,7 +36,13 @@ jobs:
           flutter-version: ${{ env.FLUTTER_VERSION }}
           channel: 'stable'
 
+      - run: cargo install flutter_rust_bridge_codegen@2.9.0
+  
       - run: flutter_rust_bridge_codegen generate
 
+      - run: cd rust ; cargo clippy --fix --workspace
+      - run: cd rust ; cargo fmt --all
+  
+      - run: dart format .
 
       - uses: autofix-ci/action@551dded8c6cc8a1054039c8bc0b8b48c51dfc6ef
