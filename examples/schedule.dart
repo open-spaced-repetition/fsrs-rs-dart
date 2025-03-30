@@ -21,7 +21,7 @@ Future<void> scheduleNewCard() async {
   const desiredRetention = 0.9;
 
   // Create a new FSRS model
-  final fsrs = new Fsrs(parameters: defaultParameters);
+  final fsrs = new Fsrs(parameters: defaultParameters());
 
   // Get next states for a new card
   final nextStates = fsrs.nextStates(
@@ -62,7 +62,7 @@ Future<void> scheduleExistingCard() async {
   const desiredRetention = 0.9;
 
   // Create a new FSRS model
-  final fsrs = new Fsrs(parameters: defaultParameters);
+  final fsrs = new Fsrs(parameters: defaultParameters());
 
   // Calculate the elapsed time since the last review
   final elapsedDays =
