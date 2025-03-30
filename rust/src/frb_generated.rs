@@ -27,7 +27,7 @@
 
 use crate::api::fsrs_api::*;
 use flutter_rust_bridge::for_generated::byteorder::{NativeEndian, ReadBytesExt, WriteBytesExt};
-use flutter_rust_bridge::for_generated::{Lifetimeable, Lockable, transform_result_dco};
+use flutter_rust_bridge::for_generated::{transform_result_dco, Lifetimeable, Lockable};
 use flutter_rust_bridge::{Handler, IntoIntoDart};
 
 // Section: boilerplate
@@ -38,7 +38,7 @@ flutter_rust_bridge::frb_generated_boilerplate!(
     default_rust_auto_opaque = RustAutoOpaqueMoi,
 );
 pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_VERSION: &str = "2.9.0";
-pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_CONTENT_HASH: i32 = 846429790;
+pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_CONTENT_HASH: i32 = 977475550;
 
 // Section: executor
 
@@ -46,6 +46,35 @@ flutter_rust_bridge::frb_generated_default_handler!();
 
 // Section: wire_funcs
 
+fn wire__crate__api__fsrs_api__DEFAULT_PARAMETERS_impl(
+    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+    rust_vec_len_: i32,
+    data_len_: i32,
+) -> flutter_rust_bridge::for_generated::WireSyncRust2DartSse {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_sync::<flutter_rust_bridge::for_generated::SseCodec, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "DEFAULT_PARAMETERS",
+            port: None,
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Sync,
+        },
+        move || {
+            let message = unsafe {
+                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+                    ptr_,
+                    rust_vec_len_,
+                    data_len_,
+                )
+            };
+            let mut deserializer =
+                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+            deserializer.end();
+            transform_result_sse::<_, ()>((move || {
+                let output_ok = Result::<_, ()>::Ok(crate::api::fsrs_api::DEFAULT_PARAMETERS())?;
+                Ok(output_ok)
+            })())
+        },
+    )
+}
 fn wire__crate__api__fsrs_api__FsrsItem_get_reviews_impl(
     ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
     rust_vec_len_: i32,
@@ -1354,6 +1383,14 @@ impl SseDecode for f32 {
     }
 }
 
+impl SseDecode for [f32; 19] {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut inner = <Vec<f32>>::sse_decode(deserializer);
+        return flutter_rust_bridge::for_generated::from_vec_to_array(inner);
+    }
+}
+
 impl SseDecode for Vec<RustAutoOpaqueMoi<FSRSReview>> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
@@ -1474,7 +1511,7 @@ fn pde_ffi_dispatcher_primary_impl(
 ) {
     // Codec=Pde (Serialization + dispatch), see doc to use other codecs
     match func_id {
-        25 => wire__crate__api__fsrs_api__init_app_impl(port, ptr, rust_vec_len, data_len),
+        26 => wire__crate__api__fsrs_api__init_app_impl(port, ptr, rust_vec_len, data_len),
         _ => unreachable!(),
     }
 }
@@ -1487,36 +1524,37 @@ fn pde_ffi_dispatcher_sync_impl(
 ) -> flutter_rust_bridge::for_generated::WireSyncRust2DartSse {
     // Codec=Pde (Serialization + dispatch), see doc to use other codecs
     match func_id {
-        1 => wire__crate__api__fsrs_api__FsrsItem_get_reviews_impl(ptr, rust_vec_len, data_len),
-        2 => wire__crate__api__fsrs_api__FsrsItem_long_term_review_cnt_impl(
+        1 => wire__crate__api__fsrs_api__DEFAULT_PARAMETERS_impl(ptr, rust_vec_len, data_len),
+        2 => wire__crate__api__fsrs_api__FsrsItem_get_reviews_impl(ptr, rust_vec_len, data_len),
+        3 => wire__crate__api__fsrs_api__FsrsItem_long_term_review_cnt_impl(
             ptr,
             rust_vec_len,
             data_len,
         ),
-        3 => wire__crate__api__fsrs_api__FsrsItem_new_impl(ptr, rust_vec_len, data_len),
-        4 => wire__crate__api__fsrs_api__FsrsItem_set_reviews_impl(ptr, rust_vec_len, data_len),
-        5 => wire__crate__api__fsrs_api__FsrsItem_to_string_impl(ptr, rust_vec_len, data_len),
-        6 => wire__crate__api__fsrs_api__FsrsReview_new_impl(ptr, rust_vec_len, data_len),
-        7 => wire__crate__api__fsrs_api__FsrsReview_to_string_impl(ptr, rust_vec_len, data_len),
-        8 => wire__crate__api__fsrs_api__Fsrs_benchmark_impl(ptr, rust_vec_len, data_len),
-        9 => wire__crate__api__fsrs_api__Fsrs_compute_parameters_impl(ptr, rust_vec_len, data_len),
-        10 => wire__crate__api__fsrs_api__Fsrs_memory_state_impl(ptr, rust_vec_len, data_len),
-        11 => {
+        4 => wire__crate__api__fsrs_api__FsrsItem_new_impl(ptr, rust_vec_len, data_len),
+        5 => wire__crate__api__fsrs_api__FsrsItem_set_reviews_impl(ptr, rust_vec_len, data_len),
+        6 => wire__crate__api__fsrs_api__FsrsItem_to_string_impl(ptr, rust_vec_len, data_len),
+        7 => wire__crate__api__fsrs_api__FsrsReview_new_impl(ptr, rust_vec_len, data_len),
+        8 => wire__crate__api__fsrs_api__FsrsReview_to_string_impl(ptr, rust_vec_len, data_len),
+        9 => wire__crate__api__fsrs_api__Fsrs_benchmark_impl(ptr, rust_vec_len, data_len),
+        10 => wire__crate__api__fsrs_api__Fsrs_compute_parameters_impl(ptr, rust_vec_len, data_len),
+        11 => wire__crate__api__fsrs_api__Fsrs_memory_state_impl(ptr, rust_vec_len, data_len),
+        12 => {
             wire__crate__api__fsrs_api__Fsrs_memory_state_from_sm2_impl(ptr, rust_vec_len, data_len)
         }
-        12 => wire__crate__api__fsrs_api__Fsrs_new_impl(ptr, rust_vec_len, data_len),
-        13 => wire__crate__api__fsrs_api__Fsrs_next_states_impl(ptr, rust_vec_len, data_len),
-        14 => wire__crate__api__fsrs_api__Fsrs_to_string_impl(ptr, rust_vec_len, data_len),
-        15 => wire__crate__api__fsrs_api__ItemState_interval_impl(ptr, rust_vec_len, data_len),
-        16 => wire__crate__api__fsrs_api__ItemState_memory_impl(ptr, rust_vec_len, data_len),
-        17 => wire__crate__api__fsrs_api__ItemState_to_string_impl(ptr, rust_vec_len, data_len),
-        18 => wire__crate__api__fsrs_api__MemoryState_new_impl(ptr, rust_vec_len, data_len),
-        19 => wire__crate__api__fsrs_api__MemoryState_to_string_impl(ptr, rust_vec_len, data_len),
-        20 => wire__crate__api__fsrs_api__NextStates_again_impl(ptr, rust_vec_len, data_len),
-        21 => wire__crate__api__fsrs_api__NextStates_easy_impl(ptr, rust_vec_len, data_len),
-        22 => wire__crate__api__fsrs_api__NextStates_good_impl(ptr, rust_vec_len, data_len),
-        23 => wire__crate__api__fsrs_api__NextStates_hard_impl(ptr, rust_vec_len, data_len),
-        24 => wire__crate__api__fsrs_api__NextStates_to_string_impl(ptr, rust_vec_len, data_len),
+        13 => wire__crate__api__fsrs_api__Fsrs_new_impl(ptr, rust_vec_len, data_len),
+        14 => wire__crate__api__fsrs_api__Fsrs_next_states_impl(ptr, rust_vec_len, data_len),
+        15 => wire__crate__api__fsrs_api__Fsrs_to_string_impl(ptr, rust_vec_len, data_len),
+        16 => wire__crate__api__fsrs_api__ItemState_interval_impl(ptr, rust_vec_len, data_len),
+        17 => wire__crate__api__fsrs_api__ItemState_memory_impl(ptr, rust_vec_len, data_len),
+        18 => wire__crate__api__fsrs_api__ItemState_to_string_impl(ptr, rust_vec_len, data_len),
+        19 => wire__crate__api__fsrs_api__MemoryState_new_impl(ptr, rust_vec_len, data_len),
+        20 => wire__crate__api__fsrs_api__MemoryState_to_string_impl(ptr, rust_vec_len, data_len),
+        21 => wire__crate__api__fsrs_api__NextStates_again_impl(ptr, rust_vec_len, data_len),
+        22 => wire__crate__api__fsrs_api__NextStates_easy_impl(ptr, rust_vec_len, data_len),
+        23 => wire__crate__api__fsrs_api__NextStates_good_impl(ptr, rust_vec_len, data_len),
+        24 => wire__crate__api__fsrs_api__NextStates_hard_impl(ptr, rust_vec_len, data_len),
+        25 => wire__crate__api__fsrs_api__NextStates_to_string_impl(ptr, rust_vec_len, data_len),
         _ => unreachable!(),
     }
 }
@@ -1743,6 +1781,19 @@ impl SseEncode for f32 {
     }
 }
 
+impl SseEncode for [f32; 19] {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <Vec<f32>>::sse_encode(
+            {
+                let boxed: Box<[_]> = Box::new(self);
+                boxed.into_vec()
+            },
+            serializer,
+        );
+    }
+}
+
 impl SseEncode for Vec<RustAutoOpaqueMoi<FSRSReview>> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
@@ -1858,7 +1909,7 @@ mod io {
     use flutter_rust_bridge::for_generated::byteorder::{
         NativeEndian, ReadBytesExt, WriteBytesExt,
     };
-    use flutter_rust_bridge::for_generated::{Lifetimeable, Lockable, transform_result_dco};
+    use flutter_rust_bridge::for_generated::{transform_result_dco, Lifetimeable, Lockable};
     use flutter_rust_bridge::{Handler, IntoIntoDart};
 
     // Section: boilerplate
@@ -1967,7 +2018,7 @@ mod web {
     };
     use flutter_rust_bridge::for_generated::wasm_bindgen;
     use flutter_rust_bridge::for_generated::wasm_bindgen::prelude::*;
-    use flutter_rust_bridge::for_generated::{Lifetimeable, Lockable, transform_result_dco};
+    use flutter_rust_bridge::for_generated::{transform_result_dco, Lifetimeable, Lockable};
     use flutter_rust_bridge::{Handler, IntoIntoDart};
 
     // Section: boilerplate

@@ -149,6 +149,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   double dco_decode_f_32(dynamic raw);
 
   @protected
+  F32Array19 dco_decode_f_32_array_19(dynamic raw);
+
+  @protected
   List<FsrsReview>
       dco_decode_list_AutoExplicit_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerFSRSReview(
           dynamic raw);
@@ -299,6 +302,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   double sse_decode_f_32(SseDeserializer deserializer);
+
+  @protected
+  F32Array19 sse_decode_f_32_array_19(SseDeserializer deserializer);
 
   @protected
   List<FsrsReview>
@@ -457,6 +463,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   void sse_encode_f_32(double self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_f_32_array_19(F32Array19 self, SseSerializer serializer);
 
   @protected
   void
