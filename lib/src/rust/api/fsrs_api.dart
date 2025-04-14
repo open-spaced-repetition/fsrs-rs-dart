@@ -52,9 +52,13 @@ abstract class FsrsItem implements RustOpaqueInterface {
 
 // Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<FSRSReview>>
 abstract class FsrsReview implements RustOpaqueInterface {
+  int get deltaT;
+
   factory FsrsReview({required int rating, required int deltaT}) =>
       RustLib.instance.api
           .crateApiFsrsApiFsrsReviewNew(rating: rating, deltaT: deltaT);
+
+  int get rating;
 
   String toString();
 }
@@ -70,10 +74,14 @@ abstract class ItemState implements RustOpaqueInterface {
 
 // Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<MemoryState>>
 abstract class MemoryState implements RustOpaqueInterface {
+  double get difficulty;
+
   factory MemoryState(
           {required double stability, required double difficulty}) =>
       RustLib.instance.api.crateApiFsrsApiMemoryStateNew(
           stability: stability, difficulty: difficulty);
+
+  double get stability;
 
   String toString();
 }
