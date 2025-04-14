@@ -95,6 +95,14 @@ impl MemoryState {
             difficulty,
         })
     }
+    #[frb(sync, getter)]
+    pub fn stability(&self) -> f32 {
+        self.0.stability
+    }
+    #[frb(sync, getter)]
+    pub fn difficulty(&self) -> f32 {
+        self.0.difficulty
+    }
     #[frb(sync)]
     pub fn to_string(&self) -> String {
         format!("{:?}", self.0)
@@ -191,6 +199,14 @@ impl FSRSReview {
     #[frb(sync)]
     pub fn new(rating: u32, delta_t: u32) -> Self {
         Self(fsrs::FSRSReview { rating, delta_t })
+    }
+    #[frb(sync, getter)]
+    pub fn rating(&self) -> u32 {
+        self.0.rating
+    }
+    #[frb(sync, getter)]
+    pub fn delta_t(&self) -> u32 {
+        self.0.delta_t
     }
     #[frb(sync)]
     pub fn to_string(&self) -> String {
