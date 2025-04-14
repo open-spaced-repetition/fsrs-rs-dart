@@ -13,6 +13,6 @@ dependencies:
   collection: ^1.18.0
 dev_dependencies:
   test: ^1.21.4
-  freezed: ^2.1.0+1
+  freezed: ^3.0.0
   build_runner: ^2.4.4
   ffigen: ^11.0.0
