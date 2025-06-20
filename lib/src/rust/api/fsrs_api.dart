@@ -56,10 +56,9 @@ abstract class FsrsItem implements RustOpaqueInterface {
 abstract class FsrsReview implements RustOpaqueInterface {
   int get deltaT;
 
-  factory FsrsReview({required int rating, required int deltaT}) => RustLib
-      .instance
-      .api
-      .crateApiFsrsApiFsrsReviewNew(rating: rating, deltaT: deltaT);
+  factory FsrsReview({required int rating, required int deltaT}) =>
+      RustLib.instance.api
+          .crateApiFsrsApiFsrsReviewNew(rating: rating, deltaT: deltaT);
 
   int get rating;
 
@@ -82,10 +81,11 @@ abstract class MemoryState implements RustOpaqueInterface {
   factory MemoryState({
     required double stability,
     required double difficulty,
-  }) => RustLib.instance.api.crateApiFsrsApiMemoryStateNew(
-    stability: stability,
-    difficulty: difficulty,
-  );
+  }) =>
+      RustLib.instance.api.crateApiFsrsApiMemoryStateNew(
+        stability: stability,
+        difficulty: difficulty,
+      );
 
   double get stability;
 
@@ -112,7 +112,9 @@ class F32Array19 extends NonGrowableListView<double> {
   Float32List get inner => _inner;
   final Float32List _inner;
 
-  F32Array19(this._inner) : assert(_inner.length == arraySize), super(_inner);
+  F32Array19(this._inner)
+      : assert(_inner.length == arraySize),
+        super(_inner);
 
   F32Array19.init() : this(Float32List(arraySize));
 }
