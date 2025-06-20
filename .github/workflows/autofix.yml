@@ -36,9 +36,9 @@ jobs:
           flutter-version: ${{ env.FLUTTER_VERSION }}
           channel: 'stable'
   
-      - run: |
-          cargo install flutter_rust_bridge_codegen@2.9.0 || true
-          flutter_rust_bridge_codegen generate
+ #     - run: |
+ #         cargo install flutter_rust_bridge_codegen@2.9.0 || true
+ #         flutter_rust_bridge_codegen generate
   
       - run: dart format .
 

@@ -38,18 +38,35 @@ impl FSRS {
     }
     #[frb(sync)]
     pub fn compute_parameters(&self, train_set: &[FSRSItem]) -> Vec<f32> {
+        let items: Vec<fsrs::FSRSItem> = train_set.iter().map(|x| x.0.clone()).collect();
+        let input = fsrs::ComputeParametersInput {
+            train_set: items,
+            progress: None,
+            enable_short_term: true,
+            num_relearning_steps: None,
+        };
         self.0
             .lock()
             .unwrap()
-            .compute_parameters(train_set.iter().map(|x| x.0.clone()).collect(), None, true)
-            .unwrap_or_default()
+            .compute_parameters(input)
+            .unwrap_or_else(|e| {
+                eprintln!("Error computing parameters: {:?}", e);
+                fsrs::DEFAULT_PARAMETERS.to_vec()
+            })
     }
     #[frb(sync)]
     pub fn benchmark(&self, train_set: &[FSRSItem]) -> Vec<f32> {
+        let items: Vec<fsrs::FSRSItem> = train_set.iter().map(|x| x.0.clone()).collect();
+        let input = fsrs::ComputeParametersInput {
+            train_set: items,
+            progress: None,
+            enable_short_term: true,
+            num_relearning_steps: None, // benchmark doesn't use this field from ComputeParametersInput
+        };
         self.0
             .lock()
             .unwrap()
-            .benchmark(train_set.iter().map(|x| x.0.clone()).collect(), true)
+            .benchmark(input)
     }
     #[frb(sync)]
     pub fn memory_state_from_sm2(
