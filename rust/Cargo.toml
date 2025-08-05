@@ -4,7 +4,7 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
-flutter_rust_bridge = "=2.10.0"
+flutter_rust_bridge = "=2.11.1"
 fsrs = { version = "5.0.1" }
 
 [lib]
