@@ -75,7 +75,7 @@ class RustLib extends BaseEntrypoint<RustLibApi, RustLibApiImpl, RustLibWire> {
 }
 
 abstract class RustLibApi extends BaseApi {
-  F32Array19 crateApiFsrsApiDefaultParameters();
+  F32Array21 crateApiFsrsApiDefaultParameters();
 
   List<FsrsReview> crateApiFsrsApiFsrsItemGetReviews({required FsrsItem that});
 
@@ -220,7 +220,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   });
 
   @override
-  F32Array19 crateApiFsrsApiDefaultParameters() {
+  F32Array21 crateApiFsrsApiDefaultParameters() {
     return handler.executeSync(
       SyncTask(
         callFfi: () {
@@ -228,7 +228,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 1)!;
         },
         codec: SseCodec(
-          decodeSuccessData: sse_decode_f_32_array_19,
+          decodeSuccessData: sse_decode_f_32_array_21,
           decodeErrorData: null,
         ),
         constMeta: kCrateApiFsrsApiDefaultParametersConstMeta,
@@ -1362,9 +1362,9 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  F32Array19 dco_decode_f_32_array_19(dynamic raw) {
+  F32Array21 dco_decode_f_32_array_21(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
-    return F32Array19(dco_decode_list_prim_f_32_strict(raw));
+    return F32Array21(dco_decode_list_prim_f_32_strict(raw));
   }
 
   @protected
@@ -1727,10 +1727,10 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  F32Array19 sse_decode_f_32_array_19(SseDeserializer deserializer) {
+  F32Array21 sse_decode_f_32_array_21(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     var inner = sse_decode_list_prim_f_32_strict(deserializer);
-    return F32Array19(inner);
+    return F32Array21(inner);
   }
 
   @protected
@@ -2148,7 +2148,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  void sse_encode_f_32_array_19(F32Array19 self, SseSerializer serializer) {
+  void sse_encode_f_32_array_21(F32Array21 self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_list_prim_f_32_strict(self.inner, serializer);
   }
