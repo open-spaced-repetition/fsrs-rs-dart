@@ -18,6 +18,39 @@ Future<void> main() async {
 
 see [examples](./examples)
 
+## Scheduling with learning steps
+
+Use `FsrsScheduler` when you want Py-FSRS-style learning and relearning
+steps. The lower-level `Fsrs.nextStates()` API returns FSRS memory states and
+review intervals only; `FsrsScheduler` applies fixed learning-step intervals
+around those memory-state updates.
+
+```dart
+import 'package:fsrs/fsrs.dart';
+
+Future<void> main() async {
+  await RustLib.init();
+
+  final scheduler = FsrsScheduler(
+    parameters: defaultParameters(),
+    learningSteps: const [
+      Duration(minutes: 1),
+      Duration(minutes: 10),
+    ],
+    relearningSteps: const [
+      Duration(minutes: 10),
+    ],
+  );
+
+  final card = FsrsCard();
+  final result = scheduler.reviewCard(card, FsrsRating.good);
+
+  print(result.card.state);
+  print(result.card.step);
+  print(result.card.due);
+}
+```
+
 ## Features
 
 - Core FSRS algorithm implemented in Rust
@@ -25,6 +58,7 @@ see [examples](./examples)
 - Memory state management
 - Review scheduling
 - Item state tracking
+- Py-FSRS-style learning and relearning step scheduling
 
 ---
 
