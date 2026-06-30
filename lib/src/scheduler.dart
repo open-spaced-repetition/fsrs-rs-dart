@@ -231,8 +231,7 @@ class FsrsScheduler {
   }) {
     final step = card.step ?? 0;
 
-    if (steps.isEmpty ||
-        (step >= steps.length && rating != FsrsRating.again)) {
+    if (steps.isEmpty || (step >= steps.length && rating != FsrsRating.again)) {
       return _graduate(
         card: card,
         rating: rating,
