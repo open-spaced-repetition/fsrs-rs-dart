@@ -4,15 +4,18 @@ version: 0.0.1
 homepage: https://github.com/open-spaced-repetition/fsrs-rs-dart
 repository: https://github.com/open-spaced-repetition/fsrs-rs-dart
 issue_tracker: https://github.com/open-spaced-repetition/fsrs-rs-dart/issues
+resolution: workspace
 environment:
-  sdk: '>=3.3.0 <4.0.0'
+  sdk: '>=3.5.0 <4.0.0'
 dependencies:
   lints: ^5.0.0
-  flutter_rust_bridge: 2.10.0
+  flutter_rust_bridge: 2.13.0-beta.3  # native-assets backend; must match codegen + Rust crate
   freezed_annotation: ^3.0.0
   collection: ^1.18.0
+  flutter_rust_bridge_hooks: 2.13.0-beta.3
 dev_dependencies:
+  integration_test:
+    sdk: flutter
   test: ^1.21.4
-  freezed: ^3.0.0
-  build_runner: ^2.4.4
-  ffigen: ^11.0.0
+  # codegen tools (freezed/build_runner/ffigen) dropped — the generated code is
+  # committed, and their pins conflict with other workspace members.
