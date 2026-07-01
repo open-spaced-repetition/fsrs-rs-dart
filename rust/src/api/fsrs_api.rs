@@ -14,7 +14,7 @@ pub struct FSRS(Mutex<fsrs::FSRS>);
 impl FSRS {
     #[frb(sync)]
     pub fn new(parameters: Vec<f32>) -> Self {
-        Self(fsrs::FSRS::new(Some(&parameters)).unwrap().into())
+        Self(fsrs::FSRS::new(&parameters).unwrap().into())
     }
     #[frb(sync)]
     pub fn next_states(
@@ -41,32 +41,29 @@ impl FSRS {
         let items: Vec<fsrs::FSRSItem> = train_set.iter().map(|x| x.0.clone()).collect();
         let input = fsrs::ComputeParametersInput {
             train_set: items,
+            card_ids: None,
             progress: None,
             enable_short_term: true,
             num_relearning_steps: None,
+            training_config: None,
         };
-        self.0
-            .lock()
-            .unwrap()
-            .compute_parameters(input)
-            .unwrap_or_else(|e| {
-                eprintln!("Error computing parameters: {:?}", e);
-                fsrs::DEFAULT_PARAMETERS.to_vec()
-            })
+        fsrs::compute_parameters(input).unwrap_or_else(|e| {
+            eprintln!("Error computing parameters: {:?}", e);
+            fsrs::DEFAULT_PARAMETERS.to_vec()
+        })
     }
     #[frb(sync)]
     pub fn benchmark(&self, train_set: &[FSRSItem]) -> Vec<f32> {
         let items: Vec<fsrs::FSRSItem> = train_set.iter().map(|x| x.0.clone()).collect();
         let input = fsrs::ComputeParametersInput {
             train_set: items,
+            card_ids: None,
             progress: None,
             enable_short_term: true,
             num_relearning_steps: None, // benchmark doesn't use this field from ComputeParametersInput
+            training_config: None,
         };
-        self.0
-            .lock()
-            .unwrap()
-            .benchmark(input)
+        fsrs::benchmark(input)
     }
     #[frb(sync)]
     pub fn memory_state_from_sm2(
@@ -233,9 +230,6 @@ impl FSRSReview {
 
 #[frb(sync)]
 #[allow(non_snake_case)]
-pub fn DEFAULT_PARAMETERS() -> [f32; 19] {
-    [
-        0.40255, 1.18385, 3.173, 15.69105, 7.1949, 0.5345, 1.4604, 0.0046, 1.54575, 0.1192,
-        1.01925, 1.9395, 0.11, 0.29605, 2.2698, 0.2315, 2.9898, 0.51655, 0.6621,
-    ]
+pub fn DEFAULT_PARAMETERS() -> [f32; 21] {
+    fsrs::DEFAULT_PARAMETERS
 }

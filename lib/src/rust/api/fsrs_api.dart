@@ -9,7 +9,7 @@ import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 
 // These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `clone`, `clone`, `clone`, `clone`, `clone`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`
 
-F32Array19 defaultParameters() =>
+F32Array21 defaultParameters() =>
     RustLib.instance.api.crateApiFsrsApiDefaultParameters();
 
 // Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<FSRS>>
@@ -99,16 +99,16 @@ abstract class NextStates implements RustOpaqueInterface {
   String toString();
 }
 
-class F32Array19 extends NonGrowableListView<double> {
-  static const arraySize = 19;
+class F32Array21 extends NonGrowableListView<double> {
+  static const arraySize = 21;
 
   @internal
   Float32List get inner => _inner;
   final Float32List _inner;
 
-  F32Array19(this._inner)
+  F32Array21(this._inner)
       : assert(_inner.length == arraySize),
         super(_inner);
 
-  F32Array19.init() : this(Float32List(arraySize));
+  F32Array21.init() : this(Float32List(arraySize));
 }
