@@ -15,11 +15,7 @@ Future<void> scheduleNewCard() async {
     );
   }
 
-  final reviewed = scheduler.reviewCard(
-    card,
-    FsrsRating.good,
-    reviewDate: now,
-  );
+  final reviewed = scheduler.reviewCard(card, FsrsRating.good, reviewDate: now);
 
   print('After Good:');
   print('state=${reviewed.card.state.name}');

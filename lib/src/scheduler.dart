@@ -32,9 +32,9 @@ class FsrsCard {
     this.memoryState,
     DateTime? due,
     DateTime? lastReview,
-  })  : step = state == FsrsCardState.review ? null : step ?? 0,
-        due = (due ?? DateTime.now().toUtc()).toUtc(),
-        lastReview = lastReview?.toUtc();
+  }) : step = state == FsrsCardState.review ? null : step ?? 0,
+       due = (due ?? DateTime.now().toUtc()).toUtc(),
+       lastReview = lastReview?.toUtc();
 
   final int? cardId;
   final FsrsCardState state;
@@ -99,13 +99,11 @@ class FsrsScheduler {
       Duration(minutes: 1),
       Duration(minutes: 10),
     ],
-    List<Duration> relearningSteps = const [
-      Duration(minutes: 10),
-    ],
+    List<Duration> relearningSteps = const [Duration(minutes: 10)],
     this.maximumInterval = 36500,
-  })  : fsrs = fsrs ?? Fsrs(parameters: parameters ?? defaultParameters()),
-        learningSteps = List.unmodifiable(learningSteps),
-        relearningSteps = List.unmodifiable(relearningSteps) {
+  }) : fsrs = fsrs ?? Fsrs(parameters: parameters ?? defaultParameters()),
+       learningSteps = List.unmodifiable(learningSteps),
+       relearningSteps = List.unmodifiable(relearningSteps) {
     if (desiredRetention <= 0 || desiredRetention >= 1) {
       throw ArgumentError.value(
         desiredRetention,
@@ -171,27 +169,27 @@ class FsrsScheduler {
   }) {
     return switch (card.state) {
       FsrsCardState.learning => _scheduleStepCard(
-          card: card,
-          rating: rating,
-          reviewedAt: reviewedAt,
-          itemState: itemState,
-          steps: learningSteps,
-          stepState: FsrsCardState.learning,
-        ),
+        card: card,
+        rating: rating,
+        reviewedAt: reviewedAt,
+        itemState: itemState,
+        steps: learningSteps,
+        stepState: FsrsCardState.learning,
+      ),
       FsrsCardState.review => _scheduleReviewCard(
-          card: card,
-          rating: rating,
-          reviewedAt: reviewedAt,
-          itemState: itemState,
-        ),
+        card: card,
+        rating: rating,
+        reviewedAt: reviewedAt,
+        itemState: itemState,
+      ),
       FsrsCardState.relearning => _scheduleStepCard(
-          card: card,
-          rating: rating,
-          reviewedAt: reviewedAt,
-          itemState: itemState,
-          steps: relearningSteps,
-          stepState: FsrsCardState.relearning,
-        ),
+        card: card,
+        rating: rating,
+        reviewedAt: reviewedAt,
+        itemState: itemState,
+        steps: relearningSteps,
+        stepState: FsrsCardState.relearning,
+      ),
     };
   }
 
@@ -254,8 +252,8 @@ class FsrsScheduler {
       case FsrsRating.hard:
         final interval = step == 0
             ? (steps.length == 1
-                ? _multiplyDuration(steps.first, 1.5)
-                : _averageDuration(steps[0], steps[1]))
+                  ? _multiplyDuration(steps.first, 1.5)
+                  : _averageDuration(steps[0], steps[1]))
             : steps[step];
         return _result(
           card: card,
@@ -377,7 +375,5 @@ Duration _averageDuration(Duration first, Duration second) {
 }
 
 Duration _multiplyDuration(Duration duration, double factor) {
-  return Duration(
-    microseconds: (duration.inMicroseconds * factor).round(),
-  );
+  return Duration(microseconds: (duration.inMicroseconds * factor).round());
 }

@@ -55,10 +55,7 @@ List<FsrsItem> convertToFsrsItem(List<(DateTime, int)> history) {
 
   for (final (date, rating) in history) {
     final deltaT = date.difference(lastDate).inDays;
-    final review = new FsrsReview(
-      rating: rating,
-      deltaT: deltaT,
-    );
+    final review = new FsrsReview(rating: rating, deltaT: deltaT);
     reviews.add(review);
     final item = new FsrsItem(reviews: List.from(reviews));
     items.add(item);
